@@ -50,6 +50,11 @@
   <ItemGroup>
     <Compile Include="Entities\TFString.cs" />
     <Compile Include="ExportOptions.cs" />
+    <Compile Include="Projects\Shenmue\Files\FileFactory.cs" />
+    <Compile Include="Projects\Shenmue\Files\SubFile.cs" />
+    <Compile Include="Projects\Shenmue\ProjectInfo.cs" />
+    <Compile Include="Projects\Shenmue\ShenmueProject.cs" />
+    <Compile Include="Projects\Yakuza0\Files\MfpFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\MsgFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\MailFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\FileFactory.cs" />

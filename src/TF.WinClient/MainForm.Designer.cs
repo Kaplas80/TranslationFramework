@@ -33,6 +33,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
+            this.UsedCharLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenuBar = new System.Windows.Forms.MenuStrip();
             this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FileNewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,17 +43,20 @@
             this.FileExportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.FileExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenProjectFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.AddFileToProjectDialog = new System.Windows.Forms.OpenFileDialog();
+            this.ImportFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.StringsDataGrid = new System.Windows.Forms.DataGridView();
+            this.StringsDataGrid = new TF.WinClient.TFDataGridView();
             this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ExportProjectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.UsedCharLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
@@ -67,10 +71,16 @@
             this.StatusBar.Size = new System.Drawing.Size(1088, 22);
             this.StatusBar.TabIndex = 0;
             // 
+            // UsedCharLabel
+            // 
+            this.UsedCharLabel.Name = "UsedCharLabel";
+            this.UsedCharLabel.Size = new System.Drawing.Size(0, 17);
+            // 
             // MainMenuBar
             // 
             this.MainMenuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileMenuItem});
+            this.FileMenuItem,
+            this.ToolsMenuItem});
             this.MainMenuBar.Location = new System.Drawing.Point(0, 0);
             this.MainMenuBar.Name = "MainMenuBar";
             this.MainMenuBar.Size = new System.Drawing.Size(1088, 24);
@@ -140,6 +150,37 @@
             this.FileExitMenuItem.Text = "Salir";
             this.FileExitMenuItem.Click += new System.EventHandler(this.FileExitMenuItem_Click);
             // 
+            // ToolsMenuItem
+            // 
+            this.ToolsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ImportToolMenuItem});
+            this.ToolsMenuItem.Name = "ToolsMenuItem";
+            this.ToolsMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.ToolsMenuItem.Text = "Herramientas";
+            // 
+            // ImportToolMenuItem
+            // 
+            this.ImportToolMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ImportTFMenuItem,
+            this.ImportExcelMenuItem});
+            this.ImportToolMenuItem.Name = "ImportToolMenuItem";
+            this.ImportToolMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportToolMenuItem.Text = "Importar traduccion";
+            // 
+            // ImportTFMenuItem
+            // 
+            this.ImportTFMenuItem.Name = "ImportTFMenuItem";
+            this.ImportTFMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.ImportTFMenuItem.Text = "Desde tf_*";
+            this.ImportTFMenuItem.Click += new System.EventHandler(this.ImportTFMenuItem_Click);
+            // 
+            // ImportExcelMenuItem
+            // 
+            this.ImportExcelMenuItem.Name = "ImportExcelMenuItem";
+            this.ImportExcelMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.ImportExcelMenuItem.Text = "Desde Excel";
+            this.ImportExcelMenuItem.Click += new System.EventHandler(this.ImportExcelMenuItem_Click);
+            // 
             // StringsDataGrid
             // 
             this.StringsDataGrid.AllowUserToAddRows = false;
@@ -153,11 +194,15 @@
             this.colTranslation});
             this.StringsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StringsDataGrid.Location = new System.Drawing.Point(0, 24);
+            this.StringsDataGrid.MultiSelect = false;
             this.StringsDataGrid.Name = "StringsDataGrid";
+            this.StringsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.StringsDataGrid.Size = new System.Drawing.Size(1088, 580);
             this.StringsDataGrid.TabIndex = 2;
             this.StringsDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.StringsDataGrid_CellEndEdit);
+            this.StringsDataGrid.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.StringsDataGrid_CellMouseDoubleClick);
             this.StringsDataGrid.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.StringsDataGrid_CellPainting);
+            this.StringsDataGrid.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.StringsDataGrid_EditingControlShowing);
             // 
             // colID
             // 
@@ -211,11 +256,6 @@
     "e que tenía el fichero original.";
             this.ExportProjectFolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
-            // UsedCharLabel
-            // 
-            this.UsedCharLabel.Name = "UsedCharLabel";
-            this.UsedCharLabel.Size = new System.Drawing.Size(0, 17);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -247,13 +287,13 @@
         private System.Windows.Forms.ToolStripMenuItem FileOpenMenuItem;
         private System.Windows.Forms.OpenFileDialog OpenProjectFileDialog;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.OpenFileDialog AddFileToProjectDialog;
+        private System.Windows.Forms.OpenFileDialog ImportFileDialog;
         private System.Windows.Forms.ToolStripMenuItem FileSaveMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FileExportMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem FileExitMenuItem;
         private System.Windows.Forms.SaveFileDialog SaveProjectFileDialog;
-        private System.Windows.Forms.DataGridView StringsDataGrid;
+        private TFDataGridView StringsDataGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn colID;
         private System.Windows.Forms.DataGridViewTextBoxColumn colGroup;
         private System.Windows.Forms.DataGridViewTextBoxColumn colOffset;
@@ -261,6 +301,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colTranslation;
         private System.Windows.Forms.FolderBrowserDialog ExportProjectFolderBrowserDialog;
         private System.Windows.Forms.ToolStripStatusLabel UsedCharLabel;
+        private System.Windows.Forms.ToolStripMenuItem ToolsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ImportToolMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ImportTFMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ImportExcelMenuItem;
     }
 }
 

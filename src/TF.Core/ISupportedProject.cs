@@ -4,6 +4,6 @@
     {
         string SaveProjectFilter { get; }
 
-        bool ValidateInstallPath(string path);
+        string OpenProjectFilter { get; }
     }
 }

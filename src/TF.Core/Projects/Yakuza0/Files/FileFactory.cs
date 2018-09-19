@@ -7,9 +7,10 @@ namespace TF.Core.Projects.Yakuza0.Files
 {
     public static class FileFactory
     {
-        private static readonly byte[] EPMB_HEADER = {0x65, 0x50, 0x4d, 0x42};
+        private static readonly byte[] EPMB_HEADER = {0x65, 0x50, 0x4D, 0x42};
         private static readonly byte[] DB_HEADER = {0x20, 0x07, 0x03, 0x19};
         private static readonly byte[] MSG_HEADER = {0x20, 0xF7};
+        private static readonly byte[] MFP_HEADER = {0x6D, 0x66, 0x70, 0x62};
 
         public static ITFFile GetFile(string fileName)
         {
@@ -28,6 +29,11 @@ namespace TF.Core.Projects.Yakuza0.Files
                 return new CmnFile(fileName);
             }
 
+            if (fileName.Contains("Yakuza0.exe"))
+            {
+                return new ExeFile(fileName);
+            }
+
             var header = ReadHeader(fileName);
 
             if (header.SequenceEqual(EPMB_HEADER))
@@ -40,16 +46,16 @@ namespace TF.Core.Projects.Yakuza0.Files
                 return new DbFile(fileName);
             }
 
+            if (header.SequenceEqual(MFP_HEADER))
+            {
+                return new MfpFile(fileName);
+            }
+
             var header2bytes = new byte[2];
             Array.Copy(header, header2bytes, 2);
             if (header2bytes.SequenceEqual(MSG_HEADER))
             {
                 return new MsgFile(fileName);
-            }
-
-            if (fileName.EndsWith(".exe"))
-            {
-                return new ExeFile(fileName);
             }
 
             return null;

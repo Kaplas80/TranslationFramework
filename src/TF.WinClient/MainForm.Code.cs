@@ -1,7 +1,10 @@
 ﻿using System;
-using System.Drawing;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ExcelDataReader;
 using TF.Core;
 using TF.Core.Entities;
 
@@ -11,7 +14,7 @@ namespace TF.WinClient
     {
         private Project _openProject;
 
-        private string GetProjectFilesFilter()
+        private string GetSaveProjectFilesFilter()
         {
             var projects = Main.GetSupportedProjects();
 
@@ -27,16 +30,34 @@ namespace TF.WinClient
             return sb.ToString();
         }
 
+        private string GetOpenProjectFilesFilter()
+        {
+            var projects = Main.GetSupportedProjects();
+
+            var sb = new StringBuilder();
+            foreach (var project in projects)
+            {
+                sb.Append(project.OpenProjectFilter);
+                sb.Append(";");
+            }
+
+            sb.Remove(sb.Length - 1, 1);
+
+            return sb.ToString();
+        }
+
         private void CreateNewProject()
         {
             CloseProject();
 
-            SaveProjectFileDialog.Filter = GetProjectFilesFilter();
+            SaveProjectFileDialog.Filter = GetSaveProjectFilesFilter();
 
             var result = SaveProjectFileDialog.ShowDialog(this);
 
             if (result == DialogResult.OK)
             {
+                Project project = null;
+
                 try
                 {
                     var i = 0;
@@ -59,7 +80,7 @@ namespace TF.WinClient
                     }
 
 
-                    var project = ProjectFactory.GetProject(SaveProjectFileDialog.FileName);
+                    project = ProjectFactory.GetProject(SaveProjectFileDialog.FileName);
 
                     if (AddFileToProject(project))
                     {
@@ -75,6 +96,8 @@ namespace TF.WinClient
                 catch (Exception e)
                 {
                     MessageBox.Show($"No se ha podido crear el proyecto.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    project?.Close();
                 }
             }
         }
@@ -83,15 +106,16 @@ namespace TF.WinClient
         {
             CloseProject();
             
-            OpenProjectFileDialog.Filter = GetProjectFilesFilter();
+            OpenProjectFileDialog.Filter = "Traducciones|" + GetOpenProjectFilesFilter();
 
             var result = OpenProjectFileDialog.ShowDialog(this);
 
             if (result == DialogResult.OK)
             {
+                Project project = null;
                 try
                 {
-                    var project = ProjectFactory.GetProject(OpenProjectFileDialog.FileName);
+                    project = ProjectFactory.GetProject(OpenProjectFileDialog.FileName);
 
                     project.LoadFile();
 
@@ -106,6 +130,8 @@ namespace TF.WinClient
                 catch (Exception e)
                 {
                     MessageBox.Show($"No se ha podido abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    project?.Close();
                 }
             }
         }
@@ -126,15 +152,15 @@ namespace TF.WinClient
         {
             var fileFilter = p.CompatibleFilesFilter;
 
-            AddFileToProjectDialog.Filter = fileFilter;
+            ImportFileDialog.Filter = fileFilter;
 
-            var result = AddFileToProjectDialog.ShowDialog(this);
+            var result = ImportFileDialog.ShowDialog(this);
 
             if (result == DialogResult.OK)
             {
                 try
                 {
-                    p.SetFile(AddFileToProjectDialog.FileName);
+                    p.SetFile(ImportFileDialog.FileName);
                 }
                 catch (TFUnknownFileTypeException e)
                 {
@@ -158,6 +184,8 @@ namespace TF.WinClient
                     StringsDataGrid.Rows[row].Tag = tfString;
                 }
             }
+
+            UpdateProcessedStringsLabel();
         }
 
         private void UpdateString(int row)
@@ -200,6 +228,132 @@ namespace TF.WinClient
                         _openProject.Export(ExportProjectFolderBrowserDialog.SelectedPath, options);
                     }
                 }
+            }
+        }
+
+        private void UpdateProcessedStringsLabel()
+        {
+            var totalStrings = _openProject.Strings.Count;
+            var modifiedStrings = _openProject.Strings.Count(x => x.Original != x.Translation);
+            UsedCharLabel.Text = $"Cadenas modificadas: {modifiedStrings} de {totalStrings}";
+        }
+
+        private void ImportTF()
+        {
+            if (_openProject == null)
+            {
+                return;
+            }
+
+            ImportFileDialog.Filter = "Traducciones|" + GetOpenProjectFilesFilter();
+
+            var result = ImportFileDialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                var strings = new Dictionary<string, string>();
+
+                Project project = null;
+                try
+                {
+                    project = ProjectFactory.GetProject(ImportFileDialog.FileName);
+
+                    project.LoadFile();
+
+                    project.LoadStrings();
+
+                    foreach (var tfString in project.Strings)
+                    {
+                        var key = tfString.Original;
+                        var value = tfString.Translation;
+
+                        if (!string.IsNullOrEmpty(key))
+                        {
+                            if (!strings.ContainsKey(key))
+                            {
+                                strings.Add(key, value);
+                            }
+                        }
+                    }
+
+                    project.Close();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"No se ha podido abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    project?.Close();
+
+                    return;
+                }
+
+                foreach (var tfString in _openProject.Strings)
+                {
+                    var key = tfString.Original;
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        if (strings.ContainsKey(key))
+                        {
+                            tfString.Translation = strings[key];
+                        }
+                    }
+                }
+
+                StringsDataGrid.Rows.Clear();
+                LoadDataGrid();
+            }
+        }
+
+        private void ImportExcel()
+        {
+            if (_openProject == null)
+            {
+                return;
+            }
+
+            ImportFileDialog.Filter = "Archivos Excel|*.xls;*.xlsx";
+
+            var result = ImportFileDialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                var strings = new Dictionary<string, string>();
+
+                using (var stream = File.Open(ImportFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    // Auto-detect format, supports:
+                    //  - Binary Excel files (2.0-2003 format; *.xls)
+                    //  - OpenXml Excel files (2007 format; *.xlsx)
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+
+                        var content = reader.AsDataSet();
+
+                        var table = content.Tables[0];
+
+                        for (int i = 0; i < table.Rows.Count; i++)
+                        {
+                            var key = table.Rows[i][0].ToString();
+                            var value = table.Rows[i][1].ToString();
+
+                            if (!strings.ContainsKey(key))
+                            {
+                                strings.Add(key, value);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var tfString in _openProject.Strings)
+                {
+                    if (strings.ContainsKey(tfString.Original))
+                    {
+                        tfString.Translation = strings[tfString.Original];
+                    }
+                }
+
+                StringsDataGrid.Rows.Clear();
+                LoadDataGrid();
             }
         }
     }

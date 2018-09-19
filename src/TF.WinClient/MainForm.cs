@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -51,6 +52,8 @@ namespace TF.WinClient
         private void StringsDataGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             UpdateString(e.RowIndex);
+
+            UpdateProcessedStringsLabel();
         }
 
         private void FileSaveMenuItem_Click(object sender, System.EventArgs e)
@@ -131,6 +134,29 @@ namespace TF.WinClient
                 e.CellStyle.Font, rect, defaultColor, formatFlags);
 
             e.Handled = true;
+        }
+
+        private void ImportTFMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportTF();
+        }
+
+        private void ImportExcelMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportExcel();
+        }
+
+        private void StringsDataGrid_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control.GetType()== typeof(DataGridViewTextBoxEditingControl)) // "System.Windows.Forms.DataGridViewTextBoxEditingControl")
+            {
+                SendKeys.Send("{RIGHT}");
+            }
+        }
+
+        private void StringsDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            StringsDataGrid.BeginEdit(false);
         }
     }
 }

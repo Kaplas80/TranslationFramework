@@ -13,6 +13,11 @@ namespace TF.Core
                 return Projects.Yakuza0.Yakuza0Project.GetProject(projectPath);
             }
 
+            if (projectPath.EndsWith("tf_shm"))
+            {
+                return Projects.Shenmue.ShenmueProject.GetProject(projectPath);
+            }
+
             throw new Exception();
         }
     }

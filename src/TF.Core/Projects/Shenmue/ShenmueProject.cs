@@ -1,23 +1,30 @@
 ﻿using TF.Core.Entities;
 using TF.Core.Persistence;
-using TF.Core.Projects.Yakuza0.Files;
+using TF.Core.Projects.Shenmue.Files;
 
-namespace TF.Core.Projects.Yakuza0
+namespace TF.Core.Projects.Shenmue
 {
-    public class Yakuza0Project : Project
+    public class ShenmueProject : Project
     {
-        public override string CompatibleFilesFilter => "Archivos de Texto de Yakuza 0|*.bin_?;*.msg;cmn.bin;Yakuza0.exe;*.mfp";
+        public override string CompatibleFilesFilter => "Archivos de Texto de Shenmue|*.sub";
 
         public static string ReadingReplacements(string input)
         {
             var result = input;
 
-            result = result.Replace('\u007F', '\u00AE');
-            result = result.Replace("~", "™");
-            //result = result.Replace("%", "^");
-            result = result.Replace("\\", "¥");
-            result = result.Replace("\r\n", "\\r\\n");
-            result = result.Replace("\n", "\\n");
+            result = result.Replace("\ufffd\ufffd", "\\r\\n");
+
+            result = result.Replace("Ê", "¿");
+            result = result.Replace("Î", "¡");
+
+            result = result.Replace("à", "á");
+            result = result.Replace("ï", "í");
+            result = result.Replace("ô", "ó");
+            result = result.Replace("ù", "ú");
+            result = result.Replace("û", "Ú");
+
+            result = result.Replace("ë", "ü");
+            result = result.Replace("â", "ñ");
 
             return result;
         }
@@ -27,19 +34,16 @@ namespace TF.Core.Projects.Yakuza0
             var result = input;
 
             result = result.Replace("\\r\\n", "\r\n");
-            result = result.Replace("\\n", "\n");
-            
-            result = result.Replace("™", "\u007F");
 
             return result;
         }
 
-        protected Yakuza0Project(Repository repository)
+        protected ShenmueProject(Repository repository)
         {
             _repository = repository;
         }
 
-        public static Yakuza0Project GetProject(string path)
+        public static ShenmueProject GetProject(string path)
         {
             Repository repository;
 
@@ -52,7 +56,7 @@ namespace TF.Core.Projects.Yakuza0
                 repository = Repository.Create(path);
             }
 
-            var result = new Yakuza0Project(repository) {Path = path};
+            var result = new ShenmueProject(repository) {Path = path};
             return result;
         }
 
@@ -91,28 +95,21 @@ namespace TF.Core.Projects.Yakuza0
 
             _repository.InsertConfig("PATH", fileName);
             _repository.InsertConfig("SHA1", Utils.CalculateHash(fileName));
-            _repository.InsertConfig("OUTPUT_REPLACEMENT", "0");
-            _repository.InsertConfig("OUTPUT_ENCODING", "ISO-8859-1");
+            _repository.InsertConfig("OUTPUT_REPLACEMENT", "1");
+            _repository.InsertConfig("OUTPUT_ENCODING", "UTF-8");
 
-            _repository.InsertReplacement("á", "a");
-            _repository.InsertReplacement("é", "e");
-            _repository.InsertReplacement("í", "i");
-            _repository.InsertReplacement("ó", "o");
-            _repository.InsertReplacement("ú", "u");
-            _repository.InsertReplacement("ü", "u");
+            _repository.InsertReplacement("á", "à");
+            _repository.InsertReplacement("í", "ï");
+            _repository.InsertReplacement("ó", "ô");
+            _repository.InsertReplacement("ú", "ù");
+            _repository.InsertReplacement("ü", "ë");
 
-            _repository.InsertReplacement("Á", "A");
-            _repository.InsertReplacement("É", "E");
-            _repository.InsertReplacement("Í", "I");
-            _repository.InsertReplacement("Ó", "O");
-            _repository.InsertReplacement("Ú", "U");
-            _repository.InsertReplacement("Ü", "U");
+            _repository.InsertReplacement("Ú", "û");
 
-            _repository.InsertReplacement("ñ", "n");
-            _repository.InsertReplacement("Ñ", "N");
+            _repository.InsertReplacement("ñ", "â");
 
-            _repository.InsertReplacement("¡", "!");
-            _repository.InsertReplacement("¿", "?");
+            _repository.InsertReplacement("¡", "Î");
+            _repository.InsertReplacement("¿", "Ê");
 
             file.Read();
 
