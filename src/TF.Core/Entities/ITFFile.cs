@@ -5,6 +5,8 @@ namespace TF.Core.Entities
 {
     public interface ITFFile
     {
+        long Id { get; set; }
+
         Gibbed.IO.Endian Endianness { get; }
         Encoding Encoding { get; }
 

@@ -61,6 +61,7 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                     var item = new TFString()
                     {
+                        FileId = Id,
                         Offset = pointer2,
                         Section = pointer1.ToString("X8"),
                         Original = str,

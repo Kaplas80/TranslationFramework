@@ -35,7 +35,11 @@ namespace TF.Core.Persistence
             var command = new SQLiteCommand(sql, _dbConnection);
             command.ExecuteNonQuery();
 
-            sql = "CREATE TABLE TRANSLATION(ID INTEGER PRIMARY KEY, VISIBLE INTEGER, FIELD TEXT, OFFSET INTEGER, ORIGINAL TEXT, TRANSLATION TEXT)";
+            sql = "CREATE TABLE FILES(ID INTEGER PRIMARY KEY, PATH TEXT, HASH TEXT)";
+            command = new SQLiteCommand(sql, _dbConnection);
+            command.ExecuteNonQuery();
+
+            sql = "CREATE TABLE TRANSLATION(ID INTEGER PRIMARY KEY, FILE INTEGER, VISIBLE INTEGER, FIELD TEXT, OFFSET INTEGER, ORIGINAL TEXT, TRANSLATION TEXT)";
             command = new SQLiteCommand(sql, _dbConnection);
             command.ExecuteNonQuery();
 
@@ -157,10 +161,55 @@ namespace TF.Core.Persistence
             command.ExecuteNonQuery();
         }
 
+        public void InsertFile(DbFile file)
+        {
+            var sql = "INSERT INTO FILES(PATH, HASH) VALUES (@path, @hash)";
+            var command = new SQLiteCommand(sql, _dbConnection);
+            command.Parameters.AddWithValue("@path", file.Path);
+            command.Parameters.AddWithValue("@hash", file.Hash);
+            
+            command.ExecuteNonQuery();
+
+            file.Id = GetId();
+        }
+
+        public void DeleteFile(long id)
+        {
+            var sql = "DELETE FROM FILES WHERE ID = @id";
+            var command = new SQLiteCommand(sql, _dbConnection);
+            command.Parameters.AddWithValue("@id", id);
+            
+            command.ExecuteNonQuery();
+        }
+
+        public IList<DbFile> GetFiles()
+        {
+            var result = new List<DbFile>();
+
+            var sql = "SELECT ID, PATH, HASH FROM FILES";
+            var command = new SQLiteCommand(sql, _dbConnection);
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var str = new DbFile
+                {
+                    Id = Convert.ToInt64(reader["ID"]),
+                    Path = reader["PATH"].ToString(),
+                    Hash = reader["HASH"].ToString()
+                };
+
+                result.Add(str);
+            }
+            reader.Close();
+            return result;
+        }
+
         public void InsertString(TFString str)
         {
-            var sql = "INSERT INTO TRANSLATION(VISIBLE, FIELD, OFFSET, ORIGINAL, TRANSLATION) VALUES (@visible, @field, @offset, @original, @translation)";
+            var sql = "INSERT INTO TRANSLATION(FILE, VISIBLE, FIELD, OFFSET, ORIGINAL, TRANSLATION) VALUES (@file, @visible, @field, @offset, @original, @translation)";
             var command = new SQLiteCommand(sql, _dbConnection);
+            command.Parameters.AddWithValue("@file", str.FileId);
             command.Parameters.AddWithValue("@visible", str.Visible?1:0);
             command.Parameters.AddWithValue("@field", str.Section);
             command.Parameters.AddWithValue("@offset", str.Offset);
@@ -168,7 +217,7 @@ namespace TF.Core.Persistence
             command.Parameters.AddWithValue("@translation", str.Translation);
             command.ExecuteNonQuery();
 
-            str.Id = GetStrId();
+            str.Id = GetId();
         }
 
         public void InsertStrings(IList<TFString> strings)
@@ -190,7 +239,7 @@ namespace TF.Core.Persistence
             _dbTransaction.Commit();
         }
 
-        private long GetStrId()
+        private long GetId()
         {
             var sql = "select last_insert_rowid()";
             var command = new SQLiteCommand(sql, _dbConnection);
@@ -232,7 +281,7 @@ namespace TF.Core.Persistence
         {
             var result = new List<TFString>();
 
-            var sql = "SELECT ID, VISIBLE, FIELD, OFFSET, ORIGINAL, TRANSLATION FROM TRANSLATION";
+            var sql = "SELECT ID, FILE, VISIBLE, FIELD, OFFSET, ORIGINAL, TRANSLATION FROM TRANSLATION";
             var command = new SQLiteCommand(sql, _dbConnection);
             var reader = command.ExecuteReader();
 
@@ -241,6 +290,7 @@ namespace TF.Core.Persistence
                 var str = new TFString
                 {
                     Id = Convert.ToInt64(reader["ID"]),
+                    FileId = Convert.ToInt64(reader["FILE"]),
                     Visible = Convert.ToInt32(reader["VISIBLE"]) == 1,
                     Section = reader["FIELD"].ToString(),
                     Offset = Convert.ToInt32(reader["OFFSET"]),

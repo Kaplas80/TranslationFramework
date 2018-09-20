@@ -94,7 +94,7 @@ namespace TF.Core.Projects.Shenmue.Files
         {
             var stringOffset = (int) s.Position;
             
-            var value = new TFString {Offset = stringOffset, Visible = false};
+            var value = new TFString {FileId = Id, Offset = stringOffset, Visible = false};
 
             if (stringOffset != 0)
             {

@@ -49,17 +49,18 @@
             this.ImportExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.SearchToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SearchNextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenProjectFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ImportFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.ExportProjectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.StringsDataGrid = new TF.WinClient.TFDataGridView();
             this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ExportProjectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.SearchNextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
@@ -108,7 +109,7 @@
             // 
             this.FileNewMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileNewMenuItem.Image")));
             this.FileNewMenuItem.Name = "FileNewMenuItem";
-            this.FileNewMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.FileNewMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FileNewMenuItem.Text = "&Nueva traducción";
             this.FileNewMenuItem.Click += new System.EventHandler(this.FileNewMenuItem_Click);
             // 
@@ -116,20 +117,20 @@
             // 
             this.FileOpenMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileOpenMenuItem.Image")));
             this.FileOpenMenuItem.Name = "FileOpenMenuItem";
-            this.FileOpenMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.FileOpenMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FileOpenMenuItem.Text = "&Abrir traducción";
             this.FileOpenMenuItem.Click += new System.EventHandler(this.FileOpenMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(165, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // FileSaveMenuItem
             // 
             this.FileSaveMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileSaveMenuItem.Image")));
             this.FileSaveMenuItem.Name = "FileSaveMenuItem";
-            this.FileSaveMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.FileSaveMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FileSaveMenuItem.Text = "&Guardar";
             this.FileSaveMenuItem.Click += new System.EventHandler(this.FileSaveMenuItem_Click);
             // 
@@ -137,19 +138,19 @@
             // 
             this.FileExportMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileExportMenuItem.Image")));
             this.FileExportMenuItem.Name = "FileExportMenuItem";
-            this.FileExportMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.FileExportMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FileExportMenuItem.Text = "Exportar...";
             this.FileExportMenuItem.Click += new System.EventHandler(this.FileExportMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(165, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
             // 
             // FileExitMenuItem
             // 
             this.FileExitMenuItem.Name = "FileExitMenuItem";
-            this.FileExitMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.FileExitMenuItem.Size = new System.Drawing.Size(180, 22);
             this.FileExitMenuItem.Text = "Salir";
             this.FileExitMenuItem.Click += new System.EventHandler(this.FileExitMenuItem_Click);
             // 
@@ -200,6 +201,24 @@
             this.SearchToolMenuItem.Text = "Buscar...";
             this.SearchToolMenuItem.Click += new System.EventHandler(this.SearchToolMenuItem_Click);
             // 
+            // SearchNextMenuItem
+            // 
+            this.SearchNextMenuItem.Name = "SearchNextMenuItem";
+            this.SearchNextMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
+            this.SearchNextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SearchNextMenuItem.Text = "Buscar siguiente";
+            this.SearchNextMenuItem.Click += new System.EventHandler(this.SearchNextMenuItem_Click);
+            // 
+            // ImportFileDialog
+            // 
+            this.ImportFileDialog.Multiselect = true;
+            // 
+            // ExportProjectFolderBrowserDialog
+            // 
+            this.ExportProjectFolderBrowserDialog.Description = "Selecciona la carpeta donde guardar el fichero.\\r\\nSe guardará con el mismo nombr" +
+    "e que tenía el fichero original.";
+            this.ExportProjectFolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
             // StringsDataGrid
             // 
             this.StringsDataGrid.AllowUserToAddRows = false;
@@ -207,6 +226,7 @@
             this.StringsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.StringsDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colID,
+            this.colFile,
             this.colGroup,
             this.colOffset,
             this.colOriginal,
@@ -229,6 +249,12 @@
             this.colID.Name = "colID";
             this.colID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.colID.Visible = false;
+            // 
+            // colFile
+            // 
+            this.colFile.HeaderText = "Fichero";
+            this.colFile.Name = "colFile";
+            this.colFile.ReadOnly = true;
             // 
             // colGroup
             // 
@@ -269,20 +295,6 @@
             this.colTranslation.Name = "colTranslation";
             this.colTranslation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // ExportProjectFolderBrowserDialog
-            // 
-            this.ExportProjectFolderBrowserDialog.Description = "Selecciona la carpeta donde guardar el fichero.\\r\\nSe guardará con el mismo nombr" +
-    "e que tenía el fichero original.";
-            this.ExportProjectFolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
-            // 
-            // SearchNextMenuItem
-            // 
-            this.SearchNextMenuItem.Name = "SearchNextMenuItem";
-            this.SearchNextMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.SearchNextMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.SearchNextMenuItem.Text = "Buscar siguiente";
-            this.SearchNextMenuItem.Click += new System.EventHandler(this.SearchNextMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -321,11 +333,6 @@
         private System.Windows.Forms.ToolStripMenuItem FileExitMenuItem;
         private System.Windows.Forms.SaveFileDialog SaveProjectFileDialog;
         private TFDataGridView StringsDataGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colGroup;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colOffset;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colOriginal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTranslation;
         private System.Windows.Forms.FolderBrowserDialog ExportProjectFolderBrowserDialog;
         private System.Windows.Forms.ToolStripStatusLabel UsedCharLabel;
         private System.Windows.Forms.ToolStripMenuItem ToolsMenuItem;
@@ -335,6 +342,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem SearchToolMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SearchNextMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFile;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colGroup;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colOffset;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colOriginal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTranslation;
     }
 }
 

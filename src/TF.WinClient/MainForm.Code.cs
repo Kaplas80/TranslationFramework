@@ -69,11 +69,11 @@ namespace TF.WinClient
                 try
                 {
                     var i = 0;
-                    while (System.IO.File.Exists(SaveProjectFileDialog.FileName) && i < 10)
+                    while (File.Exists(SaveProjectFileDialog.FileName) && i < 10)
                     {
                         try
                         {
-                            System.IO.File.Delete(SaveProjectFileDialog.FileName);
+                            File.Delete(SaveProjectFileDialog.FileName);
                         }
                         catch (Exception e)
                         {
@@ -81,7 +81,7 @@ namespace TF.WinClient
                         }
                     }
 
-                    if (System.IO.File.Exists(SaveProjectFileDialog.FileName))
+                    if (File.Exists(SaveProjectFileDialog.FileName))
                     {
                         MessageBox.Show($"No se ha podido sobreescribir el fichero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
@@ -90,7 +90,7 @@ namespace TF.WinClient
 
                     project = ProjectFactory.GetProject(SaveProjectFileDialog.FileName);
 
-                    if (AddFileToProject(project))
+                    if (AddFilesToProject(project))
                     {
                         project.SaveStrings();
 
@@ -123,12 +123,15 @@ namespace TF.WinClient
                 Project project = null;
                 try
                 {
+                    Enabled = false;
+                    Cursor.Current = Cursors.WaitCursor;
                     project = ProjectFactory.GetProject(OpenProjectFileDialog.FileName);
 
-                    project.LoadFile();
+                    project.LoadFiles();
 
                     project.LoadStrings();
-
+                    Enabled = true;
+                    Cursor.Current = Cursors.Default;
                     _openProject = project;
 
                     LoadDataGrid();
@@ -156,7 +159,7 @@ namespace TF.WinClient
             Text = $"Translation Framework";
         }
 
-        private bool AddFileToProject(Project p)
+        private bool AddFilesToProject(Project p)
         {
             var fileFilter = p.CompatibleFilesFilter;
 
@@ -166,27 +169,37 @@ namespace TF.WinClient
 
             if (result == DialogResult.OK)
             {
-                try
+                Cursor.Current = Cursors.WaitCursor;
+                Enabled = false;
+
+                foreach (var fileName in ImportFileDialog.FileNames)
                 {
-                    p.SetFile(ImportFileDialog.FileName);
+                    try
+                    {
+                        p.SetFile(fileName);
+                    }
+                    catch (TFUnknownFileTypeException e)
+                    {
+                        Cursor.Current = Cursors.Default;
+                        MessageBox.Show($"Error al abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Cursor.Current = Cursors.WaitCursor;
+                    }
                 }
-                catch (TFUnknownFileTypeException e)
-                {
-                    MessageBox.Show($"Error al abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
+                Cursor.Current = Cursors.Default;
+                Enabled = true;
             }
 
-            return true;
+            return p.Files.Count > 0;
         }
 
         private void LoadDataGrid()
         {
+            Cursor.Current = Cursors.WaitCursor;
             foreach (var tfString in _openProject.Strings)
             {
                 if (tfString.Visible)
                 {
-                    var row = StringsDataGrid.Rows.Add(tfString.Id, tfString.Section, tfString.Offset.ToString("X8"),
+                    var row = StringsDataGrid.Rows.Add(tfString.Id, tfString.FileId, tfString.Section, tfString.Offset.ToString("X8"),
                         tfString.Original, tfString.Translation);
 
                     StringsDataGrid.Rows[row].Tag = tfString;
@@ -194,6 +207,7 @@ namespace TF.WinClient
             }
 
             UpdateProcessedStringsLabel();
+            Cursor.Current = Cursors.Default;
         }
 
         private void UpdateString(int row)
@@ -230,10 +244,14 @@ namespace TF.WinClient
                     options.CharReplacementList = form.CharReplacementList;
 
                     var folderResult = ExportProjectFolderBrowserDialog.ShowDialog(this);
-
+                    
                     if (folderResult == DialogResult.OK)
                     {
+                        Enabled = false;
+                        Cursor.Current = Cursors.WaitCursor;
                         _openProject.Export(ExportProjectFolderBrowserDialog.SelectedPath, options);
+                        Cursor.Current = Cursors.Default;
+                        Enabled = true;
                     }
                 }
             }
@@ -266,7 +284,7 @@ namespace TF.WinClient
                 {
                     project = ProjectFactory.GetProject(ImportFileDialog.FileName);
 
-                    project.LoadFile();
+                    project.LoadFiles();
 
                     project.LoadStrings();
 

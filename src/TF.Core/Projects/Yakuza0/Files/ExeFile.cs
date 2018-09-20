@@ -162,6 +162,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                     {
                         tfString = new TFString
                         {
+                            FileId = Id,
                             Offset = (int) correctedOffset,
                             Section = section.Name,
                             Original = string.Empty,
@@ -188,7 +189,7 @@ namespace TF.Core.Projects.Yakuza0.Files
 
         private TFString ReadString(Stream s, int stringOffset)
         {
-            var value = new TFString {Offset = stringOffset, Visible = false};
+            var value = new TFString {FileId = Id, Offset = stringOffset, Visible = false};
 
             var str = s.ReadStringZ(Encoding);
 
