@@ -154,7 +154,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 while (i < section.StringCount)
                 {
                     var stringOffset = s.ReadValueS64(Endianness);
-                    var correctedOffset = stringOffset - FILE_BASE;
+                    var correctedOffset = stringOffset - ((stringOffset >= 0x014E042000)?OUTPUT_BASE:FILE_BASE);
 
                     TFString tfString;
 
