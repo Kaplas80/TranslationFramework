@@ -290,6 +290,7 @@ namespace TF.Core.Projects.Yakuza0.Files
 
             var tfString = new TFString
             {
+                FileId = Id,
                 Original = str,
                 Translation = str,
                 Offset = (int) pos,

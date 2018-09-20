@@ -115,7 +115,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             var stringOffset = s.ReadValueS32(Endianness);
             var pos = s.Position;
 
-            var value = new TFString {Offset = stringOffset, Visible = false};
+            var value = new TFString {FileId = Id, Offset = stringOffset, Visible = false};
 
             if (stringOffset != 0)
             {

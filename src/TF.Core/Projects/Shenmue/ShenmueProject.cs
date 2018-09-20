@@ -1,4 +1,5 @@
-﻿using TF.Core.Entities;
+﻿using System.Linq;
+using TF.Core.Entities;
 using TF.Core.Persistence;
 using TF.Core.Projects.Shenmue.Files;
 
@@ -54,34 +55,55 @@ namespace TF.Core.Projects.Shenmue
             else
             {
                 repository = Repository.Create(path);
+
+                repository.InsertConfig("OUTPUT_REPLACEMENT", "1");
+                repository.InsertConfig("OUTPUT_ENCODING", "UTF-8");
+
+                repository.InsertReplacement("á", "à");
+                repository.InsertReplacement("í", "ï");
+                repository.InsertReplacement("ó", "ô");
+                repository.InsertReplacement("ú", "ù");
+                repository.InsertReplacement("ü", "ë");
+
+                repository.InsertReplacement("Ú", "û");
+
+                repository.InsertReplacement("ñ", "â");
+
+                repository.InsertReplacement("¡", "Î");
+                repository.InsertReplacement("¿", "Ê");
             }
 
             var result = new ShenmueProject(repository) {Path = path};
             return result;
         }
 
-        public override void LoadFile()
+        public override void LoadFiles()
         {
-            var fileName = _repository.GetConfigValue("PATH");
+            var files = _repository.GetFiles();
 
-            var file = FileFactory.GetFile(fileName);
-
-            if (file == null)
+            foreach (var dbFile in files)
             {
-                throw new TFUnknownFileTypeException("No se reconoce el tipo del fichero");
+                var fileName = dbFile.Path;
+
+                var file = FileFactory.GetFile(fileName);
+
+                if (file == null)
+                {
+                    throw new TFUnknownFileTypeException("No se reconoce el tipo del fichero");
+                }
+
+                var storedHash = dbFile.Hash;
+                var hash = Utils.CalculateHash(fileName);
+
+                if (string.Compare(storedHash, hash) != 0)
+                {
+                    throw new TFChangedFileException($"El fichero {fileName} ha cambiado. Debes crear una traducción nueva.");
+                }
+                file.Id = dbFile.Id;
+                file.Read();
+
+                Files.Add(file);
             }
-
-            var storedHash = _repository.GetConfigValue("SHA1");
-            var hash = Utils.CalculateHash(fileName);
-
-            if (string.Compare(storedHash, hash) != 0)
-            {
-                throw new TFChangedFileException($"El fichero {fileName} ha cambiado. Debes crear una traducción nueva.");
-            }
-
-            file.Read();
-
-            File = file;
         }
 
         public override void SetFile(string fileName)
@@ -93,50 +115,22 @@ namespace TF.Core.Projects.Shenmue
                 throw new TFUnknownFileTypeException("No se reconoce el tipo del fichero");
             }
 
-            _repository.InsertConfig("PATH", fileName);
-            _repository.InsertConfig("SHA1", Utils.CalculateHash(fileName));
-            _repository.InsertConfig("OUTPUT_REPLACEMENT", "1");
-            _repository.InsertConfig("OUTPUT_ENCODING", "UTF-8");
+            var dbFile = new DbFile {Path = fileName, Hash = Utils.CalculateHash(fileName)};
+            _repository.InsertFile(dbFile);
 
-            _repository.InsertReplacement("á", "à");
-            _repository.InsertReplacement("í", "ï");
-            _repository.InsertReplacement("ó", "ô");
-            _repository.InsertReplacement("ú", "ù");
-            _repository.InsertReplacement("ü", "ë");
-
-            _repository.InsertReplacement("Ú", "û");
-
-            _repository.InsertReplacement("ñ", "â");
-
-            _repository.InsertReplacement("¡", "Î");
-            _repository.InsertReplacement("¿", "Ê");
+            file.Id = dbFile.Id;
 
             file.Read();
 
-            File = file;
-        }
-
-        public override void Export(string selectedPath, ExportOptions options)
-        {
-            var originalFilename = System.IO.Path.GetFileName(File.Path);
-            var destFilename = System.IO.Path.Combine(selectedPath, originalFilename);
-
-            var fileName = System.IO.Path.GetTempFileName();
-
-            File.Save(fileName, Strings, options);
-
-            if (System.IO.File.Exists(destFilename))
+            if (file.Strings.Count(x => x.Visible) > 0)
             {
-                System.IO.File.Delete(destFilename);
+                Files.Add(file);
             }
-
-            System.IO.File.Move(fileName, destFilename);
-
-            _repository.UpdateConfigValue("OUTPUT_REPLACEMENT", options.CharReplacement.ToString());
-            _repository.UpdateConfigValue("OUTPUT_ENCODING", options.SelectedEncoding.HeaderName.ToUpperInvariant());
-
-            _repository.DeleteReplacements();
-            _repository.InsertReplacements(options.CharReplacementList);
+            else
+            {
+                _repository.DeleteFile(file.Id);
+            }
         }
+
     }
 }

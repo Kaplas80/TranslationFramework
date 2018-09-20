@@ -4,6 +4,8 @@
     {
         public long Id { get; set; }
 
+        public long FileId { get; set; }
+
         public int Offset { get; set; }
 
         public string Section { get; set; }

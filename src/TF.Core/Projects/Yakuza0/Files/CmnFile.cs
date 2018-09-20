@@ -139,6 +139,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 MaxLength = length,
                 Data = new TFString
                 {
+                    FileId = Id,
                     Offset = offset,
                     Section = section,
                     Original = str,
