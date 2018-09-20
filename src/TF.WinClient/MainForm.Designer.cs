@@ -47,6 +47,8 @@
             this.ImportToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.SearchToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenProjectFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ImportFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -57,6 +59,7 @@
             this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ExportProjectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.SearchNextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
@@ -153,7 +156,10 @@
             // ToolsMenuItem
             // 
             this.ToolsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ImportToolMenuItem});
+            this.ImportToolMenuItem,
+            this.toolStripSeparator3,
+            this.SearchToolMenuItem,
+            this.SearchNextMenuItem});
             this.ToolsMenuItem.Name = "ToolsMenuItem";
             this.ToolsMenuItem.Size = new System.Drawing.Size(90, 20);
             this.ToolsMenuItem.Text = "Herramientas";
@@ -180,6 +186,19 @@
             this.ImportExcelMenuItem.Size = new System.Drawing.Size(135, 22);
             this.ImportExcelMenuItem.Text = "Desde Excel";
             this.ImportExcelMenuItem.Click += new System.EventHandler(this.ImportExcelMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            // 
+            // SearchToolMenuItem
+            // 
+            this.SearchToolMenuItem.Name = "SearchToolMenuItem";
+            this.SearchToolMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.SearchToolMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SearchToolMenuItem.Text = "Buscar...";
+            this.SearchToolMenuItem.Click += new System.EventHandler(this.SearchToolMenuItem_Click);
             // 
             // StringsDataGrid
             // 
@@ -256,6 +275,14 @@
     "e que tenía el fichero original.";
             this.ExportProjectFolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // SearchNextMenuItem
+            // 
+            this.SearchNextMenuItem.Name = "SearchNextMenuItem";
+            this.SearchNextMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
+            this.SearchNextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SearchNextMenuItem.Text = "Buscar siguiente";
+            this.SearchNextMenuItem.Click += new System.EventHandler(this.SearchNextMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -305,6 +332,9 @@
         private System.Windows.Forms.ToolStripMenuItem ImportToolMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ImportTFMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ImportExcelMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem SearchToolMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SearchNextMenuItem;
     }
 }
 

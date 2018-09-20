@@ -12,6 +12,14 @@ namespace TF.WinClient
 {
     public partial class MainForm
     {
+        private class Search
+        {
+            public string Text;
+            public bool UseCapitalization;
+            public int StartIndex;
+        }
+
+        private Search _search;
         private Project _openProject;
 
         private string GetSaveProjectFilesFilter()
@@ -354,6 +362,70 @@ namespace TF.WinClient
 
                 StringsDataGrid.Rows.Clear();
                 LoadDataGrid();
+            }
+        }
+
+        private void SearchText()
+        {
+            var form = new SearchForm();
+            var result = form.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                _search = new Search()
+                {
+                    Text = form.SearchText,
+                    UseCapitalization = form.UseCaps,
+                    StartIndex = -1
+                };
+
+                DoSearch();
+            }
+        }
+
+        private void DoSearch()
+        {
+            if (_search == null || _openProject == null)
+            {
+                return;
+            }
+
+            var i = _search.StartIndex + 1;
+            var result = -1L;
+            while (i < StringsDataGrid.RowCount)
+            {
+                var tfString = (TFString) StringsDataGrid.Rows[i].Tag;
+
+                var original = tfString.Original;
+                var translation = tfString.Translation;
+                var textToSearch = _search.Text;
+
+                if (!_search.UseCapitalization)
+                {
+                    original = original.ToLower();
+                    translation = translation.ToLower();
+                    textToSearch = textToSearch.ToLower();
+                }
+
+                if (original.Contains(textToSearch) || translation.Contains(textToSearch))
+                {
+                    result = i;
+                    break;
+                }
+
+                i++;
+            }
+
+            if (result != -1)
+            {
+                StringsDataGrid.ClearSelection();
+                StringsDataGrid.Rows[i].Selected = true;
+                StringsDataGrid.FirstDisplayedScrollingRowIndex = i;
+                _search.StartIndex = i;
+            }
+            else
+            {
+                MessageBox.Show("No se ha encontrado el texto");
             }
         }
     }

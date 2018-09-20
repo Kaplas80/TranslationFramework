@@ -158,5 +158,15 @@ namespace TF.WinClient
         {
             StringsDataGrid.BeginEdit(false);
         }
+
+        private void SearchToolMenuItem_Click(object sender, EventArgs e)
+        {
+            SearchText();
+        }
+
+        private void SearchNextMenuItem_Click(object sender, EventArgs e)
+        {
+            DoSearch();
+        }
     }
 }
