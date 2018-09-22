@@ -106,6 +106,9 @@ namespace TF.WinClient
                     MessageBox.Show($"No se ha podido crear el proyecto.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     project?.Close();
+
+                    Cursor.Current = Cursors.Default;
+                    Enabled = true;
                 }
             }
         }

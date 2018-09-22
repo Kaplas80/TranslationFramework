@@ -28,7 +28,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_01",
                 TableOffset = 0x01053B20,
                 StringCount = 105,
-                //StringsOffset = 0x00DC72B0,
+                
                 OutputOffset = 0x0E03E800,
                 SectionSize = 0x1000
             },
@@ -37,7 +37,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_02",
                 TableOffset = 0x01053E70,
                 StringCount = 132,
-                //StringsOffset = 0x00DC7780,
+                
                 OutputOffset = 0x0E03F800,
                 SectionSize = 0x1000
             },
@@ -46,7 +46,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_03",
                 TableOffset = 0x010543C8,
                 StringCount = 389,
-                //StringsOffset = 0x00DC81F8,
+                
                 OutputOffset = 0x0E040800,
                 SectionSize = 0x4000
             },
@@ -55,7 +55,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_04",
                 TableOffset = 0x01055000,
                 StringCount = 18,
-                //StringsOffset = 0x00DC81F8,
+                
                 OutputOffset = 0x0E044800,
                 SectionSize = 0x1000
             },
@@ -64,7 +64,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_05",
                 TableOffset = 0x01055098,
                 StringCount = 26,
-                //StringsOffset = 0x00DC81F8,
+                
                 OutputOffset = 0x0E045800,
                 SectionSize = 0x1000
             },
@@ -73,7 +73,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_06",
                 TableOffset = 0x01055D50,
                 StringCount = 43,
-                //StringsOffset = 0x00DD0850,
+                
                 OutputOffset = 0x0E045800,
                 SectionSize = 0x4000
             },
@@ -82,7 +82,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_07",
                 TableOffset = 0x01055EB0,
                 StringCount = 253,
-                //StringsOffset = 0x00DCCFD8,
+                
                 OutputOffset = 0x0E049800,
                 SectionSize = 0x6000
             },
@@ -91,20 +91,70 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Name = "SECCION_08",
                 TableOffset = 0x010566A0,
                 StringCount = 28,
-                //StringsOffset = 0x00DCCFD8,
+                
                 OutputOffset = 0x0E04F800,
                 SectionSize = 0x2000
             },
             
-            /*new ExeStringTable
+            new ExeStringTable
             {
-                Name = "SECCION_06",
-                TableOffset = 0x,
-                StringCount = ,
-                StringsOffset = 0x00E85B38,
-                OutputOffset = 0x0E050800,
-                SectionSize = 0x20000
-            },*/
+                Name = "SECCION_09",
+                TableOffset = 0x01061CB0,
+                StringCount = 14,
+                
+                OutputOffset = 0x0E051800,
+                SectionSize = 0x1000
+            },
+
+            new ExeStringTable
+            {
+                Name = "SECCION_10",
+                TableOffset = 0x01061D60,
+                StringCount = 28,
+                
+                OutputOffset = 0x0E052800,
+                SectionSize = 0x1000
+            },
+
+            new ExeStringTable
+            {
+                Name = "SECCION_11",
+                TableOffset = 0x01061E60,
+                StringCount = 3,
+                
+                OutputOffset = 0x0E053800,
+                SectionSize = 0x1000
+            },
+
+            new ExeStringTable
+            {
+                Name = "SECCION_12",
+                TableOffset = 0x01061ED0,
+                StringCount = 389,
+                
+                OutputOffset = 0x0E054800,
+                SectionSize = 0x4000
+            },
+
+            new ExeStringTable
+            {
+                Name = "SECCION_13",
+                TableOffset = 0x01062B10,
+                StringCount = 18,
+                
+                OutputOffset = 0x0E058800,
+                SectionSize = 0x2000
+            },
+
+            new ExeStringTable
+            {
+                Name = "SECCION_14",
+                TableOffset = 0x01062BA8,
+                StringCount = 26,
+                
+                OutputOffset = 0x0E05A800,
+                SectionSize = 0x2000
+            },
         };
 
         private List<TFString> _dataList;
