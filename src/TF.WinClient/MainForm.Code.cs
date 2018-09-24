@@ -83,7 +83,7 @@ namespace TF.WinClient
 
                     if (File.Exists(SaveProjectFileDialog.FileName))
                     {
-                        MessageBox.Show($"No se ha podido sobreescribir el fichero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No se ha podido sobreescribir el fichero", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
@@ -146,6 +146,9 @@ namespace TF.WinClient
                     MessageBox.Show($"No se ha podido abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     project?.Close();
+                    
+                    Cursor.Current = Cursors.Default;
+                    Enabled = true;
                 }
             }
         }
@@ -159,7 +162,7 @@ namespace TF.WinClient
             }
 
             StringsDataGrid.Rows.Clear();
-            Text = $"Translation Framework";
+            Text = "Translation Framework";
         }
 
         private bool AddFilesToProject(Project p)
@@ -393,7 +396,7 @@ namespace TF.WinClient
 
             if (result == DialogResult.OK)
             {
-                _search = new Search()
+                _search = new Search
                 {
                     Text = form.SearchText,
                     UseCapitalization = form.UseCaps,

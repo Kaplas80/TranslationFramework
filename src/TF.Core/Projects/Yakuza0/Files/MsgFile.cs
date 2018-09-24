@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Gibbed.IO;
@@ -61,14 +60,11 @@ namespace TF.Core.Projects.Yakuza0.Files
 
         public override string FileType => "Msg";
         
-        public override void Read()
+        public override void Read(Stream s)
         {
-            using (var fs = new FileStream(Path, FileMode.Open))
-            {
-                ReadHeader(fs);
-                ReadData(fs);
-                ReadRemainder(fs);
-            }
+            ReadHeader(s);
+            ReadData(s);
+            ReadRemainder(s);
         }
 
         private void ReadHeader(Stream s)
@@ -301,7 +297,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             return tfString;
         }
 
-        public override void Save(string fileName, IList<TFString> strings, ExportOptions options)
+        public override void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options)
         {
             using (var fs = new FileStream(fileName, FileMode.Create))
             {

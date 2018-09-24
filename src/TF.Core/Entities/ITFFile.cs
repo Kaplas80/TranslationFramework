@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Gibbed.IO;
 
 namespace TF.Core.Entities
 {
@@ -7,7 +9,7 @@ namespace TF.Core.Entities
     {
         long Id { get; set; }
 
-        Gibbed.IO.Endian Endianness { get; }
+        Endian Endianness { get; }
         Encoding Encoding { get; }
 
         string Hash { get; }
@@ -17,7 +19,7 @@ namespace TF.Core.Entities
 
         string FileType { get; }
 
-        void Read();
-        void Save(string fileName, IList<TFString> strings, ExportOptions options);
+        void Read(Stream s);
+        void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options);
     }
 }

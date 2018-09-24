@@ -1,6 +1,7 @@
 ﻿using System;
-
 using TF.Core.Entities;
+using TF.Core.Projects.Shenmue;
+using TF.Core.Projects.Yakuza0;
 
 namespace TF.Core
 {
@@ -10,12 +11,12 @@ namespace TF.Core
         {
             if (projectPath.EndsWith("tf_yak0"))
             {
-                return Projects.Yakuza0.Yakuza0Project.GetProject(projectPath);
+                return Yakuza0Project.GetProject(projectPath);
             }
 
             if (projectPath.EndsWith("tf_shm"))
             {
-                return Projects.Shenmue.ShenmueProject.GetProject(projectPath);
+                return ShenmueProject.GetProject(projectPath);
             }
 
             throw new Exception();

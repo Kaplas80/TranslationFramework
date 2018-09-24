@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TF.Core.Persistence;
 
@@ -97,14 +98,16 @@ namespace TF.Core.Entities
 
                 var strings = Strings.Where(x => x.FileId == file.Id).ToList();
 
-                file.Save(fileName, strings, options);
+                var dbFile = _repository.GetFile(file.Id);
 
-                if (System.IO.File.Exists(destFilename))
+                file.Save(fileName, dbFile.Content, strings, options);
+
+                if (File.Exists(destFilename))
                 {
-                    System.IO.File.Delete(destFilename);
+                    File.Delete(destFilename);
                 }
 
-                System.IO.File.Move(fileName, destFilename);
+                File.Move(fileName, destFilename);
             }
 
             _repository.UpdateConfigValue("OUTPUT_REPLACEMENT", options.CharReplacement.ToString());

@@ -154,7 +154,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 
                 OutputOffset = 0x0E05A800,
                 SectionSize = 0x2000
-            },
+            }
         };
 
         private List<TFString> _dataList;
@@ -182,12 +182,9 @@ namespace TF.Core.Projects.Yakuza0.Files
 
         public override string FileType => "Yakuza0.exe";
 
-        public override void Read()
+        public override void Read(Stream s)
         {
-            using (var fs = new FileStream(Path, FileMode.Open))
-            {
-                ReadDataItems(fs);
-            }
+            ReadDataItems(s);
         }
 
         private void ReadDataItems(Stream s)
@@ -217,7 +214,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                             Section = section.Name,
                             Original = string.Empty,
                             Translation = string.Empty,
-                            Visible = false,
+                            Visible = false
                         };
                     }
                     else
@@ -255,9 +252,9 @@ namespace TF.Core.Projects.Yakuza0.Files
             return value;
         }
 
-        public override void Save(string fileName, IList<TFString> strings, ExportOptions options)
+        public override void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options)
         {
-            File.Copy(Path, fileName, true);
+            File.WriteAllBytes(fileName, originalContent);
 
             using (var fs = new FileStream(fileName, FileMode.Open))
             {

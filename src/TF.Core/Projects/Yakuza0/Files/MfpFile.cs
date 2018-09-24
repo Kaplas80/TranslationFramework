@@ -36,47 +36,46 @@ namespace TF.Core.Projects.Yakuza0.Files
 
         public override string FileType => "mfp";
 
-        public override void Read()
+        public override void Read(Stream s)
         {
             _dataList = new List<TFString>();
-            using (var fs = new FileStream(Path, FileMode.Open))
+
+            s.Seek(0x24, SeekOrigin.Begin);
+
+            var pointer1 = s.ReadValueS32(Endianness);
+
+            if (pointer1 != -1)
             {
-                fs.Seek(0x24, SeekOrigin.Begin);
+                s.Seek(pointer1, SeekOrigin.Begin);
 
-                var pointer1 = fs.ReadValueS32(Endianness);
+                var pointer2 = s.ReadValueS32(Endianness);
 
-                if (pointer1 != -1)
+                s.Seek(pointer2, SeekOrigin.Begin);
+
+                var str = s.ReadStringZ(Encoding);
+                if (!string.IsNullOrEmpty(str.TrimEnd('\0')))
                 {
-                    fs.Seek(pointer1, SeekOrigin.Begin);
-
-                    var pointer2 = fs.ReadValueS32(Endianness);
-
-                    fs.Seek(pointer2, SeekOrigin.Begin);
-
-                    var str = fs.ReadStringZ(Encoding);
-                    if (!string.IsNullOrEmpty(str.TrimEnd('\0')))
-                    {
-                        str = Yakuza0Project.ReadingReplacements(str);
-                    }
-
-                    var item = new TFString()
-                    {
-                        FileId = Id,
-                        Offset = pointer2,
-                        Section = pointer1.ToString("X8"),
-                        Original = str,
-                        Translation = str,
-                        Visible = !string.IsNullOrEmpty(str.TrimEnd('\0'))
-                    };
-
-                    _dataList.Add(item);
+                    str = Yakuza0Project.ReadingReplacements(str);
                 }
+
+                var item = new TFString
+                {
+                    FileId = Id,
+                    Offset = pointer2,
+                    Section = pointer1.ToString("X8"),
+                    Original = str,
+                    Translation = str,
+                    Visible = !string.IsNullOrEmpty(str.TrimEnd('\0'))
+                };
+
+                _dataList.Add(item);
             }
         }
 
-        public override void Save(string fileName, IList<TFString> strings, ExportOptions options)
+        public override void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options)
         {
-            File.Copy(Path, fileName, true);
+            File.WriteAllBytes(fileName, originalContent);
+
             using (var fs = new FileStream(fileName, FileMode.Open))
             {
                 for (var i = 0; i < _dataList.Count; i++)

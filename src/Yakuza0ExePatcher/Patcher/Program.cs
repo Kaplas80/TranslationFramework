@@ -3,7 +3,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-
 namespace Patcher
 {
     class Program
@@ -83,7 +82,7 @@ namespace Patcher
             new Tuple<int, byte>(0x045C4298, 0xEB),
             new Tuple<int, byte>(0x045C4299, 0x47),
             new Tuple<int, byte>(0x067AF6D6, 0x90),
-            new Tuple<int, byte>(0x067AF6D7, 0x90),
+            new Tuple<int, byte>(0x067AF6D7, 0x90)
         };
 
         static void Main(string[] args)

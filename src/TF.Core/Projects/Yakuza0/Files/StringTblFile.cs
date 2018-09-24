@@ -47,14 +47,11 @@ namespace TF.Core.Projects.Yakuza0.Files
 
         public override string FileType => "string_tbl.bin";
         
-        public override void Read()
+        public override void Read(Stream s)
         {
-            using (var fs = new FileStream(Path, FileMode.Open))
-            {
-                ReadHeader(fs);
-                
-                ReadDataItems(fs);
-            }
+            ReadHeader(s);
+            
+            ReadDataItems(s);
         }
 
         private void ReadHeader(Stream s)
@@ -138,7 +135,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             return value;
         }
 
-        public override void Save(string fileName, IList<TFString> strings, ExportOptions options)
+        public override void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options)
         {
             using (var fs = new FileStream(fileName, FileMode.Create))
             {
