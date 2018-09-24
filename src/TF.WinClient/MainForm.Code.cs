@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ExcelDataReader;
+using SpreadsheetLight;
 using TF.Core;
 using TF.Core.Entities;
 
@@ -350,42 +351,48 @@ namespace TF.WinClient
             if (result == DialogResult.OK)
             {
                 var strings = new Dictionary<string, string>();
-
-                using (var stream = File.Open(ImportFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                try
                 {
-                    // Auto-detect format, supports:
-                    //  - Binary Excel files (2.0-2003 format; *.xls)
-                    //  - OpenXml Excel files (2007 format; *.xlsx)
-                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    using (var stream = File.Open(ImportFileDialog.FileName, FileMode.Open, FileAccess.Read))
                     {
-
-                        var content = reader.AsDataSet();
-
-                        var table = content.Tables[0];
-
-                        for (int i = 0; i < table.Rows.Count; i++)
+                        // Auto-detect format, supports:
+                        //  - Binary Excel files (2.0-2003 format; *.xls)
+                        //  - OpenXml Excel files (2007 format; *.xlsx)
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
                         {
-                            var key = table.Rows[i][0].ToString();
-                            var value = table.Rows[i][1].ToString();
 
-                            if (!strings.ContainsKey(key))
+                            var content = reader.AsDataSet();
+
+                            var table = content.Tables[0];
+
+                            for (int i = 0; i < table.Rows.Count; i++)
                             {
-                                strings.Add(key, value);
+                                var key = table.Rows[i][0].ToString();
+                                var value = table.Rows[i][1].ToString();
+
+                                if (!strings.ContainsKey(key))
+                                {
+                                    strings.Add(key, value);
+                                }
                             }
                         }
                     }
-                }
 
-                foreach (var tfString in _openProject.Strings)
-                {
-                    if (strings.ContainsKey(tfString.Original))
+                    foreach (var tfString in _openProject.Strings)
                     {
-                        tfString.Translation = strings[tfString.Original];
+                        if (strings.ContainsKey(tfString.Original))
+                        {
+                            tfString.Translation = strings[tfString.Original];
+                        }
                     }
-                }
 
-                StringsDataGrid.Rows.Clear();
-                LoadDataGrid();
+                    StringsDataGrid.Rows.Clear();
+                    LoadDataGrid();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"No se ha podido abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -450,6 +457,33 @@ namespace TF.WinClient
             else
             {
                 MessageBox.Show("No se ha encontrado el texto");
+            }
+        }
+
+        private void ExportExcel()
+        {
+            if (_openProject == null)
+            {
+                return;
+            }
+
+            ExportFileDialog.Filter = "Archivos Excel|*.xlsx";
+
+            var result = ExportFileDialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                var sl = new SLDocument();
+
+                for (var i = 0; i < _openProject.Strings.Count; i++)
+                {
+                    var str = _openProject.Strings[i];
+
+                    sl.SetCellValue(i+1, 1, str.Original);
+                    sl.SetCellValue(i+1, 2, str.Translation);
+                }
+
+                sl.SaveAs(ExportFileDialog.FileName);
             }
         }
     }
