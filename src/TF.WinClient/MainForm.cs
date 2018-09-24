@@ -167,5 +167,10 @@ namespace TF.WinClient
         {
             DoSearch();
         }
+
+        private void aExcelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportExcel();
+        }
     }
 }
