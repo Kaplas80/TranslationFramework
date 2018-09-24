@@ -42,87 +42,84 @@ namespace TF.Core.Projects.Yakuza0.Files
 
         public override string FileType => "cmn.bin";
 
-        public override void Read()
+        public override void Read(Stream s)
         {
-            using (var fs = new FileStream(Path, FileMode.Open))
+            _dataList = new List<DataItem>();
+
+            var currentIndex = s.FindPattern(PATTERN);
+
+            while (currentIndex != -1)
             {
-                _dataList = new List<DataItem>();
-
-                var currentIndex = fs.FindPattern(PATTERN);
-
-                while (currentIndex != -1)
+                var subtitleType = s.ReadValueU64(Endianness);
+                if (subtitleType == 0)
                 {
-                    var subtitleType = fs.ReadValueU64(Endianness);
-                    if (subtitleType == 0)
+                    // El subtitulo es normal
+                    s.ReadBytes(40);
+
+                    var subCount1 = s.ReadValueS32(Endianness);
+                    var subCount2 = s.ReadValueS32(Endianness);
+
+                    s.ReadBytes(16);
+
+                    // Estoy al comienzo de los primeros subtitulos
+                    s.ReadBytes(272 * subCount1);
+
+                    // Ahora los segundos
+                    for (var i = 0; i < subCount2; i++)
                     {
-                        // El subtitulo es normal
-                        fs.ReadBytes(40);
+                        s.ReadBytes(16);
 
-                        var subCount1 = fs.ReadValueS32(Endianness);
-                        var subCount2 = fs.ReadValueS32(Endianness);
+                        var pos = s.Position;
 
-                        fs.ReadBytes(16);
+                        var item = GetDataItem(s, (int) pos, currentIndex.ToString("X8"), 160);
+                        _dataList.Add(item);
 
-                        // Estoy al comienzo de los primeros subtitulos
-                        fs.ReadBytes(272 * subCount1);
-
-                        // Ahora los segundos
-                        for (var i = 0; i < subCount2; i++)
-                        {
-                            fs.ReadBytes(16);
-
-                            var pos = fs.Position;
-
-                            var item = GetDataItem(fs, (int)pos, currentIndex.ToString("X8"), 160);
-                            _dataList.Add(item);
-
-                            fs.Seek(pos + 256, SeekOrigin.Begin);
-                        }
+                        s.Seek(pos + 256, SeekOrigin.Begin);
                     }
-                    else
-                    {
-                        // El subtitulo está desplazado
-                        // Hacemos un poco de "magia" para colocarnos al principio del texto
-                        fs.ReadBytes(266);
-                        var type = fs.ReadValueS32(Endianness);
-                        int step = 0;
-                        int numSubs = 0;
-                        switch (type)
-                        {
-                            case 1:
-                                step = 32;
-                                numSubs = 1;
-                                break;
-                            case 2:
-                                step = 176;
-                                numSubs = 2;
-                                break;
-                            case 3:
-                                step = 320;
-                                numSubs = 1;
-                                break;
-                            case 4:
-                                step = 464;
-                                numSubs = 2;
-                                break;
-                        }
-                        
-                        fs.ReadBytes(172 + step);
-
-                        for (int i = 0; i < numSubs; i++)
-                        {
-                            fs.ReadBytes(16);
-
-                            var pos = fs.Position;
-                            var item = GetDataItem(fs, (int) pos, currentIndex.ToString("X8"), 128);
-                            _dataList.Add(item);
-
-                            fs.Seek(pos + 128, SeekOrigin.Begin);
-                        }
-                    }
-
-                    currentIndex = fs.FindPattern(PATTERN);
                 }
+                else
+                {
+                    // El subtitulo está desplazado
+                    // Hacemos un poco de "magia" para colocarnos al principio del texto
+                    s.ReadBytes(266);
+                    var type = s.ReadValueS32(Endianness);
+                    int step = 0;
+                    int numSubs = 0;
+                    switch (type)
+                    {
+                        case 1:
+                            step = 32;
+                            numSubs = 1;
+                            break;
+                        case 2:
+                            step = 176;
+                            numSubs = 2;
+                            break;
+                        case 3:
+                            step = 320;
+                            numSubs = 1;
+                            break;
+                        case 4:
+                            step = 464;
+                            numSubs = 2;
+                            break;
+                    }
+
+                    s.ReadBytes(172 + step);
+
+                    for (int i = 0; i < numSubs; i++)
+                    {
+                        s.ReadBytes(16);
+
+                        var pos = s.Position;
+                        var item = GetDataItem(s, (int) pos, currentIndex.ToString("X8"), 128);
+                        _dataList.Add(item);
+
+                        s.Seek(pos + 128, SeekOrigin.Begin);
+                    }
+                }
+
+                currentIndex = s.FindPattern(PATTERN);
             }
         }
 
@@ -151,9 +148,10 @@ namespace TF.Core.Projects.Yakuza0.Files
             return item;
         }
 
-        public override void Save(string fileName, IList<TFString> strings, ExportOptions options)
+        public override void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options)
         {
-            File.Copy(Path, fileName, true);
+            File.WriteAllBytes(fileName, originalContent);
+
             using (var fs = new FileStream(fileName, FileMode.Open))
             {
                 for (var i = 0; i < _dataList.Count; i++)

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-
 
 namespace TF.Core
 {
@@ -13,7 +12,7 @@ namespace TF.Core
     {
         public static string CalculateHash(string path)
         {
-            using (var cp = new SHA1CryptoServiceProvider())
+            /*using (var cp = new SHA1CryptoServiceProvider())
             {
                 using (var fs = new FileStream(path, FileMode.Open))
                 {
@@ -28,7 +27,8 @@ namespace TF.Core
 
                     return sBuilder.ToString();
                 }
-            }
+            }*/
+            return string.Empty;
         }
 
         public static int GetLength(this string str, Encoding encoding)
@@ -84,6 +84,24 @@ namespace TF.Core
                 i++;
             }
             return i;
+        }
+
+        public static byte[] GetBytes(this SQLiteDataReader reader, string field)
+        {
+            const int chunkSize = 2 * 1024;
+            var buffer = new byte[chunkSize];
+            var fieldIndex = reader.GetOrdinal(field);
+            long fieldOffset = 0;
+            using (var stream = new MemoryStream())
+            {
+                long bytesRead;
+                while ((bytesRead = reader.GetBytes(fieldIndex, fieldOffset, buffer, 0, buffer.Length)) > 0)
+                {
+                    stream.Write(buffer, 0, (int)bytesRead);
+                    fieldOffset += bytesRead;
+                }
+                return stream.ToArray();
+            }
         }
     }
 }

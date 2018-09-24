@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using TF.Core.Entities;
 using TF.Core.Persistence;
 using TF.Core.Projects.Yakuza0.Files;
@@ -45,7 +46,7 @@ namespace TF.Core.Projects.Yakuza0
         {
             Repository repository;
 
-            if (System.IO.File.Exists(path))
+            if (File.Exists(path))
             {
                 repository = Repository.Open(path);
             }
@@ -87,25 +88,17 @@ namespace TF.Core.Projects.Yakuza0
 
             foreach (var dbFile in files)
             {
+                var fileContent = dbFile.Content;
                 var fileName = dbFile.Path;
 
-                var file = FileFactory.GetFile(fileName);
-
-                if (file == null)
-                {
-                    throw new TFUnknownFileTypeException("No se reconoce el tipo del fichero");
-                }
-
-                var storedHash = dbFile.Hash;
-                var hash = Utils.CalculateHash(fileName);
-
-                if (string.Compare(storedHash, hash) != 0)
-                {
-                    throw new TFChangedFileException($"El fichero {fileName} ha cambiado. Debes crear una traducción nueva.");
-                }
+                var file = FileFactory.GetFile(fileName, fileContent);
 
                 file.Id = dbFile.Id;
-                file.Read();
+                
+                using (var ms = new MemoryStream(fileContent))
+                {
+                    file.Read(ms);
+                }
 
                 Files.Add(file);
             }
@@ -120,11 +113,19 @@ namespace TF.Core.Projects.Yakuza0
                 throw new TFUnknownFileTypeException("No se reconoce el tipo del fichero");
             }
 
-            var dbFile = new DbFile {Path = fileName, Hash = Utils.CalculateHash(fileName)};
+            var dbFile = new DbFile
+            {
+                Path = fileName, Hash = Utils.CalculateHash(fileName), Content = File.ReadAllBytes(fileName)
+            };
+
             _repository.InsertFile(dbFile);
 
             file.Id = dbFile.Id;
-            file.Read();
+
+            using (var ms = new MemoryStream(dbFile.Content))
+            {
+                file.Read(ms);
+            }
 
             if (file.Strings.Count(x => x.Visible) > 0)
             {

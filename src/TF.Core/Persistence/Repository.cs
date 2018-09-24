@@ -8,7 +8,7 @@ namespace TF.Core.Persistence
 {
     public partial class Repository
     {
-        private SQLiteConnection _dbConnection;
+        private readonly SQLiteConnection _dbConnection;
         private SQLiteTransaction _dbTransaction;
 
         protected Repository(SQLiteConnection connection)
@@ -35,7 +35,7 @@ namespace TF.Core.Persistence
             var command = new SQLiteCommand(sql, _dbConnection);
             command.ExecuteNonQuery();
 
-            sql = "CREATE TABLE FILES(ID INTEGER PRIMARY KEY, PATH TEXT, HASH TEXT)";
+            sql = "CREATE TABLE FILES(ID INTEGER PRIMARY KEY, PATH TEXT, HASH TEXT, CONTENT BLOB)";
             command = new SQLiteCommand(sql, _dbConnection);
             command.ExecuteNonQuery();
 
@@ -163,10 +163,12 @@ namespace TF.Core.Persistence
 
         public void InsertFile(DbFile file)
         {
-            var sql = "INSERT INTO FILES(PATH, HASH) VALUES (@path, @hash)";
+            var sql = "INSERT INTO FILES(PATH, HASH, CONTENT) VALUES (@path, @hash, @content)";
             var command = new SQLiteCommand(sql, _dbConnection);
             command.Parameters.AddWithValue("@path", file.Path);
             command.Parameters.AddWithValue("@hash", file.Hash);
+
+            command.Parameters.AddWithValue("@content", file.Content);
             
             command.ExecuteNonQuery();
 
@@ -186,7 +188,7 @@ namespace TF.Core.Persistence
         {
             var result = new List<DbFile>();
 
-            var sql = "SELECT ID, PATH, HASH FROM FILES";
+            var sql = "SELECT ID, PATH, HASH, CONTENT FROM FILES";
             var command = new SQLiteCommand(sql, _dbConnection);
             var reader = command.ExecuteReader();
 
@@ -196,10 +198,34 @@ namespace TF.Core.Persistence
                 {
                     Id = Convert.ToInt64(reader["ID"]),
                     Path = reader["PATH"].ToString(),
-                    Hash = reader["HASH"].ToString()
+                    Hash = reader["HASH"].ToString(),
+                    Content = reader.GetBytes("CONTENT")
                 };
 
                 result.Add(str);
+            }
+            reader.Close();
+            return result;
+        }
+
+        public DbFile GetFile(long id)
+        {
+            DbFile result = null;
+            var sql = "SELECT ID, PATH, HASH, CONTENT FROM FILES WHERE ID = @id";
+            var command = new SQLiteCommand(sql, _dbConnection);
+            command.Parameters.AddWithValue("@id", id);
+
+            var reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                result = new DbFile
+                {
+                    Id = Convert.ToInt64(reader["ID"]),
+                    Path = reader["PATH"].ToString(),
+                    Hash = reader["HASH"].ToString(),
+                    Content = reader.GetBytes("CONTENT")
+                };
             }
             reader.Close();
             return result;

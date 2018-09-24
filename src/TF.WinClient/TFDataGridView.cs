@@ -1,12 +1,13 @@
-﻿using System.Windows.Forms;
+﻿using System.Security.Permissions;
+using System.Windows.Forms;
 
 namespace TF.WinClient
 {
     public class TFDataGridView : DataGridView
     {
-        [System.Security.Permissions.SecurityPermission(
-            System.Security.Permissions.SecurityAction.LinkDemand, Flags = 
-                System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)]
+        [SecurityPermission(
+            SecurityAction.LinkDemand, Flags = 
+                SecurityPermissionFlag.UnmanagedCode)]
         protected override bool ProcessDataGridViewKey(KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)

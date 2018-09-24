@@ -62,16 +62,13 @@ namespace TF.Core.Projects.Yakuza0.Files
 
         public override string FileType => "Database";
         
-        public override void Read()
+        public override void Read(Stream s)
         {
-            using (var fs = new FileStream(Path, FileMode.Open))
-            {
-                ReadHeader(fs);
-                
-                ReadFields(fs);
+            ReadHeader(s);
+            
+            ReadFields(s);
 
-                ReadData(fs);
-            }
+            ReadData(s);
         }
 
         private void ReadHeader(Stream s)
@@ -185,7 +182,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             return tfString;
         }
 
-        public override void Save(string fileName, IList<TFString> strings, ExportOptions options)
+        public override void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options)
         {
             using (var fs = new FileStream(fileName, FileMode.Create))
             {

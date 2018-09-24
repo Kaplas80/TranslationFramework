@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using Gibbed.IO;
 
@@ -18,8 +18,8 @@ namespace TF.Core.Entities
         
         public abstract Endian Endianness { get; }
         public abstract string FileType { get; }
-        public abstract void Read();
-        public abstract void Save(string fileName, IList<TFString> strings, ExportOptions options);
+        public abstract void Read(Stream s);
+        public abstract void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options);
 
         protected TFFile()
         {

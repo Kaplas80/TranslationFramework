@@ -15,6 +15,14 @@ namespace TF.Core.Projects.Shenmue.Files
             return null;
         }
 
-        
+        public static ITFFile GetFile(string fileName, byte[] fileContent)
+        {
+            if (fileName.EndsWith(".sub"))
+            {
+                return new SubFile(fileName);
+            }
+
+            return null;
+        }
     }
 }

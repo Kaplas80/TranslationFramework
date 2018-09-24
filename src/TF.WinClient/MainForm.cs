@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -14,12 +13,12 @@ namespace TF.WinClient
             var topLeftHeaderCell = StringsDataGrid.TopLeftHeaderCell;
         }
 
-        private void FileNewMenuItem_Click(object sender, System.EventArgs e)
+        private void FileNewMenuItem_Click(object sender, EventArgs e)
         {
             CreateNewProject();
         }
 
-        private void FileOpenMenuItem_Click(object sender, System.EventArgs e)
+        private void FileOpenMenuItem_Click(object sender, EventArgs e)
         {
             OpenProject();
         }
@@ -56,7 +55,7 @@ namespace TF.WinClient
             UpdateProcessedStringsLabel();
         }
 
-        private void FileSaveMenuItem_Click(object sender, System.EventArgs e)
+        private void FileSaveMenuItem_Click(object sender, EventArgs e)
         {
             SaveProject();
         }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Gibbed.IO;
 using TF.Core.Entities;
@@ -56,12 +55,9 @@ namespace TF.Core.Projects.Shenmue.Files
 
         public override string FileType => "Shenmue Sub";
         
-        public override void Read()
+        public override void Read(Stream s)
         {
-            using (var fs = new FileStream(Path, FileMode.Open))
-            {
-                ReadDataItems(fs);
-            }
+            ReadDataItems(s);
         }
 
         private void ReadDataItems(Stream s)
@@ -115,7 +111,7 @@ namespace TF.Core.Projects.Shenmue.Files
             return value;
         }
 
-        public override void Save(string fileName, IList<TFString> strings, ExportOptions options)
+        public override void Save(string fileName, byte[] originalContent, IList<TFString> strings, ExportOptions options)
         {
             using (var fs = new FileStream(fileName, FileMode.Create))
             {

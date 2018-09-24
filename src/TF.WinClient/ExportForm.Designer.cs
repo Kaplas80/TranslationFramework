@@ -1,11 +1,14 @@
-﻿namespace TF.WinClient
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace TF.WinClient
 {
     partial class ExportForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -158,14 +161,14 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView CharReplacementDataGrid;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox CharReplacementCombo;
-        private System.Windows.Forms.ComboBox EncodingCombo;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button CancelBtn;
-        private System.Windows.Forms.Button OkBtn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colString1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colString2;
+        private DataGridView CharReplacementDataGrid;
+        private Label label1;
+        private ComboBox CharReplacementCombo;
+        private ComboBox EncodingCombo;
+        private Label label2;
+        private Button CancelBtn;
+        private Button OkBtn;
+        private DataGridViewTextBoxColumn colString1;
+        private DataGridViewTextBoxColumn colString2;
     }
 }

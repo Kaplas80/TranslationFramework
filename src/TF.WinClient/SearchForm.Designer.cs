@@ -1,11 +1,14 @@
-﻿namespace TF.WinClient
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace TF.WinClient
 {
     partial class SearchForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -106,10 +109,10 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox TextToSearch;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox UseCapitalization;
-        private System.Windows.Forms.Button AbortButton;
-        private System.Windows.Forms.Button OkButton;
+        private TextBox TextToSearch;
+        private Label label1;
+        private CheckBox UseCapitalization;
+        private Button AbortButton;
+        private Button OkButton;
     }
 }

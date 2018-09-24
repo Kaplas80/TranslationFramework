@@ -1,11 +1,16 @@
-﻿namespace TF.WinClient
+﻿using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace TF.WinClient
 {
     partial class MainForm
     {
         /// <summary>
         /// Variable del diseñador necesaria.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Limpiar los recursos que se estén usando.
@@ -28,72 +33,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.StatusBar = new System.Windows.Forms.StatusStrip();
-            this.UsedCharLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MainMenuBar = new System.Windows.Forms.MenuStrip();
-            this.FileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FileNewMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FileOpenMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.FileSaveMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FileExportMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.FileExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImportToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImportTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImportExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.SearchToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SearchNextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OpenProjectFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.ImportFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.SaveProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.ExportProjectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.StringsDataGrid = new TF.WinClient.TFDataGridView();
-            this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(MainForm));
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            this.StatusBar = new StatusStrip();
+            this.UsedCharLabel = new ToolStripStatusLabel();
+            this.MainMenuBar = new MenuStrip();
+            this.FileMenuItem = new ToolStripMenuItem();
+            this.FileNewMenuItem = new ToolStripMenuItem();
+            this.FileOpenMenuItem = new ToolStripMenuItem();
+            this.toolStripSeparator1 = new ToolStripSeparator();
+            this.FileSaveMenuItem = new ToolStripMenuItem();
+            this.FileExportMenuItem = new ToolStripMenuItem();
+            this.toolStripSeparator2 = new ToolStripSeparator();
+            this.FileExitMenuItem = new ToolStripMenuItem();
+            this.ToolsMenuItem = new ToolStripMenuItem();
+            this.ImportToolMenuItem = new ToolStripMenuItem();
+            this.ImportTFMenuItem = new ToolStripMenuItem();
+            this.ImportExcelMenuItem = new ToolStripMenuItem();
+            this.toolStripSeparator3 = new ToolStripSeparator();
+            this.SearchToolMenuItem = new ToolStripMenuItem();
+            this.SearchNextMenuItem = new ToolStripMenuItem();
+            this.OpenProjectFileDialog = new OpenFileDialog();
+            this.ImportFileDialog = new OpenFileDialog();
+            this.SaveProjectFileDialog = new SaveFileDialog();
+            this.ExportProjectFolderBrowserDialog = new FolderBrowserDialog();
+            this.StringsDataGrid = new TFDataGridView();
+            this.colID = new DataGridViewTextBoxColumn();
+            this.colFile = new DataGridViewTextBoxColumn();
+            this.colGroup = new DataGridViewTextBoxColumn();
+            this.colOffset = new DataGridViewTextBoxColumn();
+            this.colOriginal = new DataGridViewTextBoxColumn();
+            this.colTranslation = new DataGridViewTextBoxColumn();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
+            ((ISupportInitialize)(this.StringsDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // StatusBar
             // 
-            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusBar.Items.AddRange(new ToolStripItem[] {
             this.UsedCharLabel});
-            this.StatusBar.Location = new System.Drawing.Point(0, 604);
+            this.StatusBar.Location = new Point(0, 604);
             this.StatusBar.Name = "StatusBar";
-            this.StatusBar.Size = new System.Drawing.Size(1088, 22);
+            this.StatusBar.Size = new Size(1088, 22);
             this.StatusBar.TabIndex = 0;
             // 
             // UsedCharLabel
             // 
             this.UsedCharLabel.Name = "UsedCharLabel";
-            this.UsedCharLabel.Size = new System.Drawing.Size(0, 17);
+            this.UsedCharLabel.Size = new Size(0, 17);
             // 
             // MainMenuBar
             // 
-            this.MainMenuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuBar.Items.AddRange(new ToolStripItem[] {
             this.FileMenuItem,
             this.ToolsMenuItem});
-            this.MainMenuBar.Location = new System.Drawing.Point(0, 0);
+            this.MainMenuBar.Location = new Point(0, 0);
             this.MainMenuBar.Name = "MainMenuBar";
-            this.MainMenuBar.Size = new System.Drawing.Size(1088, 24);
+            this.MainMenuBar.Size = new Size(1088, 24);
             this.MainMenuBar.TabIndex = 1;
             this.MainMenuBar.Text = "menuStrip1";
             // 
             // FileMenuItem
             // 
-            this.FileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.FileNewMenuItem,
             this.FileOpenMenuItem,
             this.toolStripSeparator1,
@@ -102,112 +107,112 @@
             this.toolStripSeparator2,
             this.FileExitMenuItem});
             this.FileMenuItem.Name = "FileMenuItem";
-            this.FileMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.FileMenuItem.Size = new Size(60, 20);
             this.FileMenuItem.Text = "&Archivo";
             // 
             // FileNewMenuItem
             // 
-            this.FileNewMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileNewMenuItem.Image")));
+            this.FileNewMenuItem.Image = ((Image)(resources.GetObject("FileNewMenuItem.Image")));
             this.FileNewMenuItem.Name = "FileNewMenuItem";
-            this.FileNewMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FileNewMenuItem.Size = new Size(180, 22);
             this.FileNewMenuItem.Text = "&Nueva traducción";
-            this.FileNewMenuItem.Click += new System.EventHandler(this.FileNewMenuItem_Click);
+            this.FileNewMenuItem.Click += new EventHandler(this.FileNewMenuItem_Click);
             // 
             // FileOpenMenuItem
             // 
-            this.FileOpenMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileOpenMenuItem.Image")));
+            this.FileOpenMenuItem.Image = ((Image)(resources.GetObject("FileOpenMenuItem.Image")));
             this.FileOpenMenuItem.Name = "FileOpenMenuItem";
-            this.FileOpenMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FileOpenMenuItem.Size = new Size(180, 22);
             this.FileOpenMenuItem.Text = "&Abrir traducción";
-            this.FileOpenMenuItem.Click += new System.EventHandler(this.FileOpenMenuItem_Click);
+            this.FileOpenMenuItem.Click += new EventHandler(this.FileOpenMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new Size(177, 6);
             // 
             // FileSaveMenuItem
             // 
-            this.FileSaveMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileSaveMenuItem.Image")));
+            this.FileSaveMenuItem.Image = ((Image)(resources.GetObject("FileSaveMenuItem.Image")));
             this.FileSaveMenuItem.Name = "FileSaveMenuItem";
-            this.FileSaveMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FileSaveMenuItem.Size = new Size(180, 22);
             this.FileSaveMenuItem.Text = "&Guardar";
-            this.FileSaveMenuItem.Click += new System.EventHandler(this.FileSaveMenuItem_Click);
+            this.FileSaveMenuItem.Click += new EventHandler(this.FileSaveMenuItem_Click);
             // 
             // FileExportMenuItem
             // 
-            this.FileExportMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("FileExportMenuItem.Image")));
+            this.FileExportMenuItem.Image = ((Image)(resources.GetObject("FileExportMenuItem.Image")));
             this.FileExportMenuItem.Name = "FileExportMenuItem";
-            this.FileExportMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FileExportMenuItem.Size = new Size(180, 22);
             this.FileExportMenuItem.Text = "Exportar...";
-            this.FileExportMenuItem.Click += new System.EventHandler(this.FileExportMenuItem_Click);
+            this.FileExportMenuItem.Click += new EventHandler(this.FileExportMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new Size(177, 6);
             // 
             // FileExitMenuItem
             // 
             this.FileExitMenuItem.Name = "FileExitMenuItem";
-            this.FileExitMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.FileExitMenuItem.Size = new Size(180, 22);
             this.FileExitMenuItem.Text = "Salir";
-            this.FileExitMenuItem.Click += new System.EventHandler(this.FileExitMenuItem_Click);
+            this.FileExitMenuItem.Click += new EventHandler(this.FileExitMenuItem_Click);
             // 
             // ToolsMenuItem
             // 
-            this.ToolsMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolsMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.ImportToolMenuItem,
             this.toolStripSeparator3,
             this.SearchToolMenuItem,
             this.SearchNextMenuItem});
             this.ToolsMenuItem.Name = "ToolsMenuItem";
-            this.ToolsMenuItem.Size = new System.Drawing.Size(90, 20);
+            this.ToolsMenuItem.Size = new Size(90, 20);
             this.ToolsMenuItem.Text = "Herramientas";
             // 
             // ImportToolMenuItem
             // 
-            this.ImportToolMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ImportToolMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
             this.ImportTFMenuItem,
             this.ImportExcelMenuItem});
             this.ImportToolMenuItem.Name = "ImportToolMenuItem";
-            this.ImportToolMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportToolMenuItem.Size = new Size(180, 22);
             this.ImportToolMenuItem.Text = "Importar traduccion";
             // 
             // ImportTFMenuItem
             // 
             this.ImportTFMenuItem.Name = "ImportTFMenuItem";
-            this.ImportTFMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.ImportTFMenuItem.Size = new Size(135, 22);
             this.ImportTFMenuItem.Text = "Desde tf_*";
-            this.ImportTFMenuItem.Click += new System.EventHandler(this.ImportTFMenuItem_Click);
+            this.ImportTFMenuItem.Click += new EventHandler(this.ImportTFMenuItem_Click);
             // 
             // ImportExcelMenuItem
             // 
             this.ImportExcelMenuItem.Name = "ImportExcelMenuItem";
-            this.ImportExcelMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.ImportExcelMenuItem.Size = new Size(135, 22);
             this.ImportExcelMenuItem.Text = "Desde Excel";
-            this.ImportExcelMenuItem.Click += new System.EventHandler(this.ImportExcelMenuItem_Click);
+            this.ImportExcelMenuItem.Click += new EventHandler(this.ImportExcelMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new Size(177, 6);
             // 
             // SearchToolMenuItem
             // 
             this.SearchToolMenuItem.Name = "SearchToolMenuItem";
-            this.SearchToolMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.SearchToolMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SearchToolMenuItem.ShortcutKeys = ((Keys)((Keys.Control | Keys.F)));
+            this.SearchToolMenuItem.Size = new Size(180, 22);
             this.SearchToolMenuItem.Text = "Buscar...";
-            this.SearchToolMenuItem.Click += new System.EventHandler(this.SearchToolMenuItem_Click);
+            this.SearchToolMenuItem.Click += new EventHandler(this.SearchToolMenuItem_Click);
             // 
             // SearchNextMenuItem
             // 
             this.SearchNextMenuItem.Name = "SearchNextMenuItem";
-            this.SearchNextMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.SearchNextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SearchNextMenuItem.ShortcutKeys = Keys.F3;
+            this.SearchNextMenuItem.Size = new Size(180, 22);
             this.SearchNextMenuItem.Text = "Buscar siguiente";
-            this.SearchNextMenuItem.Click += new System.EventHandler(this.SearchNextMenuItem_Click);
+            this.SearchNextMenuItem.Click += new EventHandler(this.SearchNextMenuItem_Click);
             // 
             // ImportFileDialog
             // 
@@ -217,37 +222,37 @@
             // 
             this.ExportProjectFolderBrowserDialog.Description = "Selecciona la carpeta donde guardar el fichero.\\r\\nSe guardará con el mismo nombr" +
     "e que tenía el fichero original.";
-            this.ExportProjectFolderBrowserDialog.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            this.ExportProjectFolderBrowserDialog.RootFolder = Environment.SpecialFolder.MyComputer;
             // 
             // StringsDataGrid
             // 
             this.StringsDataGrid.AllowUserToAddRows = false;
             this.StringsDataGrid.AllowUserToDeleteRows = false;
-            this.StringsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.StringsDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.StringsDataGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.StringsDataGrid.Columns.AddRange(new DataGridViewColumn[] {
             this.colID,
             this.colFile,
             this.colGroup,
             this.colOffset,
             this.colOriginal,
             this.colTranslation});
-            this.StringsDataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StringsDataGrid.Location = new System.Drawing.Point(0, 24);
+            this.StringsDataGrid.Dock = DockStyle.Fill;
+            this.StringsDataGrid.Location = new Point(0, 24);
             this.StringsDataGrid.MultiSelect = false;
             this.StringsDataGrid.Name = "StringsDataGrid";
-            this.StringsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.StringsDataGrid.Size = new System.Drawing.Size(1088, 580);
+            this.StringsDataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.StringsDataGrid.Size = new Size(1088, 580);
             this.StringsDataGrid.TabIndex = 2;
-            this.StringsDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.StringsDataGrid_CellEndEdit);
-            this.StringsDataGrid.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.StringsDataGrid_CellMouseDoubleClick);
-            this.StringsDataGrid.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.StringsDataGrid_CellPainting);
-            this.StringsDataGrid.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.StringsDataGrid_EditingControlShowing);
+            this.StringsDataGrid.CellEndEdit += new DataGridViewCellEventHandler(this.StringsDataGrid_CellEndEdit);
+            this.StringsDataGrid.CellMouseDoubleClick += new DataGridViewCellMouseEventHandler(this.StringsDataGrid_CellMouseDoubleClick);
+            this.StringsDataGrid.CellPainting += new DataGridViewCellPaintingEventHandler(this.StringsDataGrid_CellPainting);
+            this.StringsDataGrid.EditingControlShowing += new DataGridViewEditingControlShowingEventHandler(this.StringsDataGrid_EditingControlShowing);
             // 
             // colID
             // 
             this.colID.HeaderText = "ID";
             this.colID.Name = "colID";
-            this.colID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colID.SortMode = DataGridViewColumnSortMode.NotSortable;
             this.colID.Visible = false;
             // 
             // colFile
@@ -258,60 +263,60 @@
             // 
             // colGroup
             // 
-            this.colGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colGroup.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.colGroup.DefaultCellStyle = dataGridViewCellStyle1;
             this.colGroup.FillWeight = 25F;
             this.colGroup.HeaderText = "Grupo";
             this.colGroup.Name = "colGroup";
             this.colGroup.ReadOnly = true;
-            this.colGroup.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colGroup.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // colOffset
             // 
-            this.colOffset.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOffset.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.colOffset.DefaultCellStyle = dataGridViewCellStyle2;
             this.colOffset.FillWeight = 15F;
             this.colOffset.HeaderText = "Offset";
             this.colOffset.Name = "colOffset";
             this.colOffset.ReadOnly = true;
-            this.colOffset.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colOffset.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // colOriginal
             // 
-            this.colOriginal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOriginal.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.colOriginal.DefaultCellStyle = dataGridViewCellStyle3;
             this.colOriginal.HeaderText = "Original";
             this.colOriginal.Name = "colOriginal";
             this.colOriginal.ReadOnly = true;
-            this.colOriginal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colOriginal.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // colTranslation
             // 
-            this.colTranslation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colTranslation.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             this.colTranslation.HeaderText = "Traducción";
             this.colTranslation.Name = "colTranslation";
-            this.colTranslation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colTranslation.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1088, 626);
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(1088, 626);
             this.Controls.Add(this.StringsDataGrid);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.MainMenuBar);
             this.MainMenuStrip = this.MainMenuBar;
             this.Name = "MainForm";
             this.Text = "Translation Framework";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosing += new FormClosingEventHandler(this.MainForm_FormClosing);
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
             this.MainMenuBar.ResumeLayout(false);
             this.MainMenuBar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).EndInit();
+            ((ISupportInitialize)(this.StringsDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -319,35 +324,35 @@
 
         #endregion
 
-        private System.Windows.Forms.StatusStrip StatusBar;
-        private System.Windows.Forms.MenuStrip MainMenuBar;
-        private System.Windows.Forms.ToolStripMenuItem FileMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem FileNewMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem FileOpenMenuItem;
-        private System.Windows.Forms.OpenFileDialog OpenProjectFileDialog;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.OpenFileDialog ImportFileDialog;
-        private System.Windows.Forms.ToolStripMenuItem FileSaveMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem FileExportMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem FileExitMenuItem;
-        private System.Windows.Forms.SaveFileDialog SaveProjectFileDialog;
+        private StatusStrip StatusBar;
+        private MenuStrip MainMenuBar;
+        private ToolStripMenuItem FileMenuItem;
+        private ToolStripMenuItem FileNewMenuItem;
+        private ToolStripMenuItem FileOpenMenuItem;
+        private OpenFileDialog OpenProjectFileDialog;
+        private ToolStripSeparator toolStripSeparator1;
+        private OpenFileDialog ImportFileDialog;
+        private ToolStripMenuItem FileSaveMenuItem;
+        private ToolStripMenuItem FileExportMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem FileExitMenuItem;
+        private SaveFileDialog SaveProjectFileDialog;
         private TFDataGridView StringsDataGrid;
-        private System.Windows.Forms.FolderBrowserDialog ExportProjectFolderBrowserDialog;
-        private System.Windows.Forms.ToolStripStatusLabel UsedCharLabel;
-        private System.Windows.Forms.ToolStripMenuItem ToolsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ImportToolMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ImportTFMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ImportExcelMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripMenuItem SearchToolMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SearchNextMenuItem;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colFile;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colGroup;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colOffset;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colOriginal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTranslation;
+        private FolderBrowserDialog ExportProjectFolderBrowserDialog;
+        private ToolStripStatusLabel UsedCharLabel;
+        private ToolStripMenuItem ToolsMenuItem;
+        private ToolStripMenuItem ImportToolMenuItem;
+        private ToolStripMenuItem ImportTFMenuItem;
+        private ToolStripMenuItem ImportExcelMenuItem;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem SearchToolMenuItem;
+        private ToolStripMenuItem SearchNextMenuItem;
+        private DataGridViewTextBoxColumn colID;
+        private DataGridViewTextBoxColumn colFile;
+        private DataGridViewTextBoxColumn colGroup;
+        private DataGridViewTextBoxColumn colOffset;
+        private DataGridViewTextBoxColumn colOriginal;
+        private DataGridViewTextBoxColumn colTranslation;
     }
 }
 
