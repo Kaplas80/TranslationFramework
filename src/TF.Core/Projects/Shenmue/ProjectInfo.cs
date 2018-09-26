@@ -2,7 +2,7 @@
 {
     public class ProjectInfo : ISupportedProject
     {
-        public string SaveProjectFilter => "Proyectos de traducción Shenmue|*.tf_shm";
+        public string SaveProjectFilter => "Traducción Shenmue|*.tf_shm";
 
         public string OpenProjectFilter => "*.tf_shm";
 
