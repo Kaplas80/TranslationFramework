@@ -2,7 +2,7 @@
 {
     public class ProjectInfo : ISupportedProject
     {
-        public string SaveProjectFilter => "Proyectos de traducción Yakuza 0|*.tf_yak0";
+        public string SaveProjectFilter => "Traducción Yakuza 0|*.tf_yak0";
 
         public string OpenProjectFilter => "*.tf_yak0";
 
