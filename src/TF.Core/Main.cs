@@ -7,6 +7,8 @@ namespace TF.Core
         private static readonly ISupportedProject Yakuza0 = new Projects.Yakuza0.ProjectInfo();
         private static readonly ISupportedProject Shenmue = new Projects.Shenmue.ProjectInfo();
         private static readonly ISupportedProject SAO_HF = new Projects.SAO_HF.ProjectInfo();
+        private static readonly ISupportedProject SRR = new Projects.SRR.ProjectInfo();
+
         private static readonly List<ISupportedProject> SupportedProjects;
 
         static Main()
@@ -15,7 +17,8 @@ namespace TF.Core
             {
                 Yakuza0,
                 Shenmue,
-                SAO_HF
+                SAO_HF,
+                SRR
             };
         }
 
