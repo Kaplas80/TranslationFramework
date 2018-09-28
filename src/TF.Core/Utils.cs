@@ -67,6 +67,28 @@ namespace TF.Core
             return -1;
         }
 
+        public static int FindPattern(byte[] input, byte[] pattern, int startIndex)
+        {
+            var subArray = new byte[input.Length - startIndex];
+
+            Array.Copy(input, startIndex, subArray, 0, subArray.Length);
+
+            var result = -1;
+            using (var ms = new MemoryStream(subArray))
+            {
+                result = ms.FindPattern(pattern);
+            }
+
+            if (result != -1)
+            {
+                return result + startIndex;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
         private static int PadLeftSequence(byte[] bytes, byte[] seqBytes)
         {
             var i = 1;

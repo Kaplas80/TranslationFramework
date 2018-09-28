@@ -1,5 +1,6 @@
 ﻿using System;
 using TF.Core.Entities;
+using TF.Core.Projects.Disgaea;
 using TF.Core.Projects.SAO_HF;
 using TF.Core.Projects.Shenmue;
 using TF.Core.Projects.SRR;
@@ -29,6 +30,11 @@ namespace TF.Core
             if (projectPath.EndsWith("tf_srr"))
             {
                 return SRRProject.GetProject(projectPath);
+            }
+
+            if (projectPath.EndsWith("tf_dsg"))
+            {
+                return DisgaeaProject.GetProject(projectPath);
             }
 
             throw new Exception();
