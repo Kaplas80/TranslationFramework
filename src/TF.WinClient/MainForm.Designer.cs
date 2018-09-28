@@ -52,6 +52,8 @@ namespace TF.WinClient
             this.ImportToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportarTraducciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.SearchToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SearchNextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,15 +62,13 @@ namespace TF.WinClient
             this.SaveProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.ExportProjectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.StringsDataGrid = new TF.WinClient.TFDataGridView();
+            this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.exportarTraducciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
@@ -186,16 +186,31 @@ namespace TF.WinClient
             // ImportTFMenuItem
             // 
             this.ImportTFMenuItem.Name = "ImportTFMenuItem";
-            this.ImportTFMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportTFMenuItem.Size = new System.Drawing.Size(135, 22);
             this.ImportTFMenuItem.Text = "Desde tf_*";
             this.ImportTFMenuItem.Click += new System.EventHandler(this.ImportTFMenuItem_Click);
             // 
             // ImportExcelMenuItem
             // 
             this.ImportExcelMenuItem.Name = "ImportExcelMenuItem";
-            this.ImportExcelMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportExcelMenuItem.Size = new System.Drawing.Size(135, 22);
             this.ImportExcelMenuItem.Text = "Desde Excel";
             this.ImportExcelMenuItem.Click += new System.EventHandler(this.ImportExcelMenuItem_Click);
+            // 
+            // exportarTraducciónToolStripMenuItem
+            // 
+            this.exportarTraducciónToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aExcelToolStripMenuItem});
+            this.exportarTraducciónToolStripMenuItem.Name = "exportarTraducciónToolStripMenuItem";
+            this.exportarTraducciónToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportarTraducciónToolStripMenuItem.Text = "Exportar traducción";
+            // 
+            // aExcelToolStripMenuItem
+            // 
+            this.aExcelToolStripMenuItem.Name = "aExcelToolStripMenuItem";
+            this.aExcelToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.aExcelToolStripMenuItem.Text = "A Excel";
+            this.aExcelToolStripMenuItem.Click += new System.EventHandler(this.aExcelToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -264,6 +279,7 @@ namespace TF.WinClient
             this.colFile.HeaderText = "Fichero";
             this.colFile.Name = "colFile";
             this.colFile.ReadOnly = true;
+            this.colFile.Visible = false;
             // 
             // colGroup
             // 
@@ -303,21 +319,6 @@ namespace TF.WinClient
             this.colTranslation.HeaderText = "Traducción";
             this.colTranslation.Name = "colTranslation";
             this.colTranslation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // exportarTraducciónToolStripMenuItem
-            // 
-            this.exportarTraducciónToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aExcelToolStripMenuItem});
-            this.exportarTraducciónToolStripMenuItem.Name = "exportarTraducciónToolStripMenuItem";
-            this.exportarTraducciónToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportarTraducciónToolStripMenuItem.Text = "Exportar traducción";
-            // 
-            // aExcelToolStripMenuItem
-            // 
-            this.aExcelToolStripMenuItem.Name = "aExcelToolStripMenuItem";
-            this.aExcelToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.aExcelToolStripMenuItem.Text = "A Excel";
-            this.aExcelToolStripMenuItem.Click += new System.EventHandler(this.aExcelToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -366,15 +367,15 @@ namespace TF.WinClient
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem SearchToolMenuItem;
         private ToolStripMenuItem SearchNextMenuItem;
+        private ToolStripMenuItem exportarTraducciónToolStripMenuItem;
+        private ToolStripMenuItem aExcelToolStripMenuItem;
+        private SaveFileDialog ExportFileDialog;
         private DataGridViewTextBoxColumn colID;
         private DataGridViewTextBoxColumn colFile;
         private DataGridViewTextBoxColumn colGroup;
         private DataGridViewTextBoxColumn colOffset;
         private DataGridViewTextBoxColumn colOriginal;
         private DataGridViewTextBoxColumn colTranslation;
-        private ToolStripMenuItem exportarTraducciónToolStripMenuItem;
-        private ToolStripMenuItem aExcelToolStripMenuItem;
-        private SaveFileDialog ExportFileDialog;
     }
 }
 
