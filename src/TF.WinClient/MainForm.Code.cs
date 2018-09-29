@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -185,7 +186,7 @@ namespace TF.WinClient
                     {
                         p.SetFile(fileName);
                     }
-                    catch (TFUnknownFileTypeException e)
+                    catch (Exception e)
                     {
                         Cursor.Current = Cursors.Default;
                         MessageBox.Show($"Error al abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);

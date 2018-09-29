@@ -150,6 +150,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 }
                 else if (strOriginal[j] == '<')
                 {
+                    var c = strOriginal[j + 1];
                     while (strOriginal[j] != '>')
                     {
                         sb.Append(strOriginal[j]);
@@ -157,6 +158,11 @@ namespace TF.Core.Projects.Yakuza0.Files
                     }
                     sb.Append(strOriginal[j]);
                     j++;
+
+                    if (c != 'C') // No es color
+                    {
+                        i++;
+                    }
                 }
                 else if (strOriginal[j] == '\\' && strOriginal[j + 1] == 'r')
                 {
@@ -199,7 +205,8 @@ namespace TF.Core.Projects.Yakuza0.Files
             var result = strClean;
             for (var i = pauses.Count - 1; i >= 0; i--)
             {
-                result = result.Insert(pauses[i], "^^");
+                var pos = Math.Min(pauses[i], result.Length);
+                result = result.Insert(pos, "^^");
             }
 
             return result;
@@ -208,7 +215,8 @@ namespace TF.Core.Projects.Yakuza0.Files
         private string RemoveTags(string strOriginal)
         {
             var temp = strOriginal.Replace("\\r\\n", " ");
-            return Regex.Replace(temp, @"<[^>]*>", string.Empty);
+            temp = Regex.Replace(temp, @"<Color[^>]*>", string.Empty);
+            return Regex.Replace(temp, @"<[^>]*>", " ");
         }
 
         private IList<byte> GetPauses(Stream s)

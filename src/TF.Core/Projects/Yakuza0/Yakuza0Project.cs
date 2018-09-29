@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using TF.Core.Entities;
 using TF.Core.Persistence;
@@ -122,10 +123,19 @@ namespace TF.Core.Projects.Yakuza0
 
             file.Id = dbFile.Id;
 
-            using (var ms = new MemoryStream(dbFile.Content))
+            try
             {
-                file.Read(ms);
+                using (var ms = new MemoryStream(dbFile.Content))
+                {
+                    file.Read(ms);
+                }
             }
+            catch (Exception )
+            {
+                _repository.DeleteFile(file.Id);
+                throw;
+            }
+            
 
             if (file.Strings.Count(x => x.Visible) > 0)
             {
