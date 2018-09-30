@@ -82,32 +82,18 @@ namespace TF.Core.Projects.Yakuza0.Files
                     // El subtitulo está desplazado
                     // Hacemos un poco de "magia" para colocarnos al principio del texto
                     s.ReadBytes(266);
-                    var type = s.ReadValueS32(Endianness);
-                    int step = 0;
-                    int numSubs = 0;
-                    switch (type)
-                    {
-                        case 1:
-                            step = 32;
-                            numSubs = 1;
-                            break;
-                        case 2:
-                            step = 176;
-                            numSubs = 2;
-                            break;
-                        case 3:
-                            step = 320;
-                            numSubs = 1;
-                            break;
-                        case 4:
-                            step = 464;
-                            numSubs = 2;
-                            break;
-                    }
+                    var numJapaneseSubs = s.ReadValueS32(Endianness);
+                    s.ReadBytes(12);
+                    s.ReadBytes(16);
 
-                    s.ReadBytes(172 + step);
+                    s.ReadBytes(numJapaneseSubs * 144);
 
-                    for (int i = 0; i < numSubs; i++)
+                    // Ahora estoy al principio de los subtitulos en inglés
+                    var numEnglishSubs = s.ReadValueS32(Endianness);
+                    s.ReadBytes(12);
+                    s.ReadBytes(16);
+
+                    for (int i = 0; i < numEnglishSubs; i++)
                     {
                         s.ReadBytes(16);
 

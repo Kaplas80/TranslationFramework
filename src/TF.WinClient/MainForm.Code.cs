@@ -189,7 +189,7 @@ namespace TF.WinClient
                     catch (Exception e)
                     {
                         Cursor.Current = Cursors.Default;
-                        MessageBox.Show($"Error al abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Error al abrir el fichero {fileName}.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Cursor.Current = Cursors.WaitCursor;
                     }
                 }
