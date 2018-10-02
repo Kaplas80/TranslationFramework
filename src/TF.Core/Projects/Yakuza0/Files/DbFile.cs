@@ -206,8 +206,8 @@ namespace TF.Core.Projects.Yakuza0.Files
         {
             foreach (var dataField in _dataList)
             {
-                s.WriteStringZ(dataField.Name, options.SelectedEncoding);
-                var zeros = new byte[48 - (dataField.Name.GetLength(options.SelectedEncoding) + 1)];
+                s.WriteStringZ(dataField.Name, Encoding);
+                var zeros = new byte[48 - (dataField.Name.GetLength(Encoding) + 1)];
                 s.WriteBytes(zeros);
                 
                 s.WriteValueS32(dataField.DataType, Endianness);
@@ -226,7 +226,20 @@ namespace TF.Core.Projects.Yakuza0.Files
                         size += dataField.DataRemainder.Length;
                     }
 
-                    size += (from tfString in strings where tfString.Section == dataField.Name select Yakuza0Project.WritingReplacements(tfString.Translation) into str select str.GetLength(options.SelectedEncoding) + 1).Sum();
+                    foreach (var tfString in strings.Where(x => x.Section == dataField.Name))
+                    {
+                        var writeStr = tfString.Translation;
+                        if (tfString.Original.Equals(tfString.Translation))
+                        {
+                            writeStr = Yakuza0Project.WritingReplacements(writeStr);
+                            size += writeStr.GetLength(Encoding) + 1;
+                        }
+                        else
+                        {
+                            writeStr = Yakuza0Project.WritingReplacements(writeStr);
+                            size += writeStr.GetLength(options.SelectedEncoding) + 1;
+                        }
+                    }
 
                     if (dataField.DataType == 0x02)
                     {
@@ -254,8 +267,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                             continue;
                         }
 
-                        var str = value.Translation;
-                        WriteString(s, str, options);
+                        WriteString(s, value, options);
                     }
                 }
                 else if (dataType == 2)
@@ -270,8 +282,7 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                         s.WriteValueS16(item.AdditionalValues[i], Endianness);
 
-                        var str = value.Translation;
-                        WriteString(s, str, options);
+                        WriteString(s, value, options);
 
                         i++;
                     }
@@ -284,14 +295,24 @@ namespace TF.Core.Projects.Yakuza0.Files
             }
         }
 
-        private void WriteString(Stream s, string str, ExportOptions options)
+        private void WriteString(Stream s, TFString str, ExportOptions options)
         {
-            if (options.CharReplacement != 0)
+            var writeStr = str.Translation;
+            if (str.Original.Equals(str.Translation))
             {
-                str = Utils.ReplaceChars(str, options.CharReplacementList);
+                writeStr = Yakuza0Project.WritingReplacements(writeStr);
+                s.WriteStringZ(writeStr, Encoding);
             }
-            str = Yakuza0Project.WritingReplacements(str);
-            s.WriteStringZ(str, options.SelectedEncoding);
+            else
+            {
+                if (options.CharReplacement != 0)
+                {
+                    writeStr = Utils.ReplaceChars(writeStr, options.CharReplacementList);
+                }
+
+                writeStr = Yakuza0Project.WritingReplacements(writeStr);
+                s.WriteStringZ(writeStr, options.SelectedEncoding);
+            }
         }
     }
 }

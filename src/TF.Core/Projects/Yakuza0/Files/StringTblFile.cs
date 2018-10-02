@@ -183,16 +183,27 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                         if (!string.IsNullOrEmpty(str))
                         {
-                            if (options.CharReplacement != 0)
+                            if (!str.Equals(strings[stringIndex].Original))
                             {
-                                str = Utils.ReplaceChars(str, options.CharReplacementList);
+                                if (options.CharReplacement != 0)
+                                {
+                                    str = Utils.ReplaceChars(str, options.CharReplacementList);
+                                }
+
+                                str = Yakuza0Project.WritingReplacements(str);
+
+                                s.WriteStringZ(str, options.SelectedEncoding);
+
+                                offset2 += str.GetLength(options.SelectedEncoding) + 1;
                             }
+                            else
+                            {
+                                str = Yakuza0Project.WritingReplacements(str);
 
-                            str = Yakuza0Project.WritingReplacements(str);
+                                s.WriteStringZ(str, Encoding);
 
-                            s.WriteStringZ(str, options.SelectedEncoding);
-
-                            offset2 += str.GetLength(options.SelectedEncoding) + 1;
+                                offset2 += str.GetLength(Encoding) + 1;
+                            }
                         }
                         else
                         {

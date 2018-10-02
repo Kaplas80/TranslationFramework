@@ -62,13 +62,13 @@ namespace TF.WinClient
             this.SaveProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.ExportProjectFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.StringsDataGrid = new TF.WinClient.TFDataGridView();
-            this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.colID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colGroup = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOffset = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
@@ -259,7 +259,7 @@ namespace TF.WinClient
             this.StringsDataGrid.Location = new System.Drawing.Point(0, 24);
             this.StringsDataGrid.MultiSelect = false;
             this.StringsDataGrid.Name = "StringsDataGrid";
-            this.StringsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.StringsDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.StringsDataGrid.Size = new System.Drawing.Size(1088, 580);
             this.StringsDataGrid.TabIndex = 2;
             this.StringsDataGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.StringsDataGrid_CellEndEdit);

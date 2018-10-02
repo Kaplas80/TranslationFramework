@@ -371,7 +371,7 @@ namespace TF.WinClient
                                 var key = table.Rows[i][0].ToString();
                                 var value = table.Rows[i][1].ToString();
 
-                                if (!strings.ContainsKey(key))
+                                if (!string.IsNullOrEmpty(key) && !strings.ContainsKey(key))
                                 {
                                     strings.Add(key, value);
                                 }
@@ -451,7 +451,7 @@ namespace TF.WinClient
             if (result != -1)
             {
                 StringsDataGrid.ClearSelection();
-                StringsDataGrid.Rows[i].Selected = true;
+                StringsDataGrid.Rows[i].Cells["colTranslation"].Selected = true;
                 StringsDataGrid.FirstDisplayedScrollingRowIndex = i;
                 _search.StartIndex = i;
             }

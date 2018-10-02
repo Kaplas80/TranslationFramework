@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Gibbed.IO;
 using TF.Core.Entities;
@@ -146,28 +147,33 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                     fs.Seek(item.Data.Offset, SeekOrigin.Begin);
 
-                    var str = strings[i].Translation;
+                    var tfString = strings.FirstOrDefault(x => x.Offset == item.Data.Offset);
 
-                    if (strings[i].Visible && !string.IsNullOrEmpty(str))
+                    if (tfString != null)
                     {
-                        var zeros = new byte[item.MaxLength];
+                        var str = tfString.Translation;
 
-                        fs.WriteBytes(zeros);
-
-                        if (options.CharReplacement != 0)
+                        if (tfString.Visible && !string.IsNullOrEmpty(str))
                         {
-                            str = Utils.ReplaceChars(str, options.CharReplacementList);
-                        }
+                            var zeros = new byte[item.MaxLength];
 
-                        str = Yakuza0Project.WritingReplacements(str);
+                            fs.WriteBytes(zeros);
 
-                        if (str.GetLength(options.SelectedEncoding) >= item.MaxLength)
-                        {
-                            str = str.Substring(0, item.MaxLength - 1);
+                            if (options.CharReplacement != 0)
+                            {
+                                str = Utils.ReplaceChars(str, options.CharReplacementList);
+                            }
+
+                            str = Yakuza0Project.WritingReplacements(str);
+
+                            if (str.GetLength(options.SelectedEncoding) >= item.MaxLength)
+                            {
+                                str = str.Substring(0, item.MaxLength - 1);
+                            }
+
+                            fs.Seek(item.Data.Offset, SeekOrigin.Begin);
+                            fs.WriteStringZ(str, options.SelectedEncoding);
                         }
-                        
-                        fs.Seek(item.Data.Offset, SeekOrigin.Begin);
-                        fs.WriteStringZ(str, options.SelectedEncoding);
                     }
                 }
             }
