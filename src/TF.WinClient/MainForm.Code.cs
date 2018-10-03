@@ -9,6 +9,7 @@ using ExcelDataReader;
 using SpreadsheetLight;
 using TF.Core;
 using TF.Core.Entities;
+using RestSharp;
 
 namespace TF.WinClient
 {
@@ -381,9 +382,13 @@ namespace TF.WinClient
 
                     foreach (var tfString in _openProject.Strings)
                     {
-                        if (strings.ContainsKey(tfString.Original))
+                        var key = tfString.Original;
+                        if (!string.IsNullOrEmpty(key))
                         {
-                            tfString.Translation = strings[tfString.Original];
+                            if (strings.ContainsKey(key))
+                            {
+                                tfString.Translation = strings[key];
+                            }
                         }
                     }
 
@@ -486,6 +491,116 @@ namespace TF.WinClient
 
                 sl.SaveAs(ExportFileDialog.FileName);
             }
+        }
+
+        private void CheckGrammar()
+        {
+            if (_openProject == null)
+            {
+                return;
+            }
+
+            var client = new RestClient("http://localhost:8081/v2");
+
+            if (!IsGrammarServerEnabled(client))
+            {
+                MessageBox.Show(
+                    "No se ha podido conectar con el servidor de LanguageTool, comprueba que está funcionando en http://localhost:8081",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            var i = 0;
+            while (i < StringsDataGrid.RowCount)
+            {
+                var tfString = (TFString) StringsDataGrid.Rows[i].Tag;
+
+                var original = tfString.Original;
+                var translation = tfString.Translation;
+
+                if (original != translation)
+                {
+                    var numBeginSpaces = CountStartSpaces(translation);
+                    translation = translation.TrimStart(' ');
+                    translation = translation.Replace("\\r\\n", "\r\n");
+                    translation = translation.Replace("\\n", "\n");
+
+                    try
+                    {
+                        var lgResponse = CheckGrammar(client, translation);
+
+                        if (lgResponse.Matches.Count > 0)
+                        {
+                            var grammarForm = new GrammarForm(translation, lgResponse, client);
+
+                            var result = grammarForm.ShowDialog(this);
+
+                            if (result == DialogResult.Yes)
+                            {
+                                var correctedTranslation = grammarForm.FinalText;
+                                for (var j = 0; j < numBeginSpaces; j++)
+                                {
+                                    correctedTranslation = correctedTranslation.Insert(0, " ");
+                                }
+                                correctedTranslation = correctedTranslation.Replace("\r\n", "\\r\\n");
+                                correctedTranslation = correctedTranslation.Replace("\n", "\\n");
+                                tfString.Translation = correctedTranslation;
+                            }
+                            else if (result == DialogResult.Cancel)
+                            {
+                                i = StringsDataGrid.RowCount;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(
+                            $"Se ha producido un error al comprobar la ortografía\r\n{e.Message}",
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                        i = StringsDataGrid.RowCount;
+                    }
+                }
+
+                i++;
+            }
+
+            StringsDataGrid.Rows.Clear();
+            LoadDataGrid();
+        }
+
+        private static int CountStartSpaces(string text)
+        {
+            var i = 0;
+            while (text[i] == ' ')
+            {
+                i++;
+            }
+
+            return i;
+        }
+
+        private static bool IsGrammarServerEnabled(IRestClient client)
+        {
+            var request = new RestRequest("check", Method.POST);
+            request.AddParameter("language", "es");
+            request.AddParameter("text", "Texto de prueba");
+
+            var response = client.Execute(request);
+
+            return response.ResponseStatus == ResponseStatus.Completed;
+        }
+
+        private static LanguageToolResponse CheckGrammar(IRestClient client, string text)
+        {
+            var request = new RestRequest("check", Method.POST);
+            request.AddParameter("language", "es");
+            request.AddParameter("text", text);
+
+            var response = client.Execute(request);
+
+            return client.Deserialize<LanguageToolResponse>(response).Data;
         }
     }
 }

@@ -168,9 +168,14 @@ namespace TF.WinClient
             DoSearch();
         }
 
-        private void aExcelToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExportToExcelMenuItem_Click(object sender, EventArgs e)
         {
             ExportExcel();
+        }
+
+        private void CheckGrammarMenuItem_Click(object sender, EventArgs e)
+        {
+            CheckGrammar();
         }
     }
 }
