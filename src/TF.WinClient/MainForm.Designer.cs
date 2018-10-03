@@ -34,9 +34,9 @@ namespace TF.WinClient
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.UsedCharLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenuBar = new System.Windows.Forms.MenuStrip();
@@ -53,10 +53,12 @@ namespace TF.WinClient
             this.ImportTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportarTraducciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportToExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.SearchToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SearchNextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.CheckGrammarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenProjectFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ImportFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SaveProjectFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -169,7 +171,9 @@ namespace TF.WinClient
             this.exportarTraducciónToolStripMenuItem,
             this.toolStripSeparator3,
             this.SearchToolMenuItem,
-            this.SearchNextMenuItem});
+            this.SearchNextMenuItem,
+            this.toolStripSeparator4,
+            this.CheckGrammarMenuItem});
             this.ToolsMenuItem.Name = "ToolsMenuItem";
             this.ToolsMenuItem.Size = new System.Drawing.Size(90, 20);
             this.ToolsMenuItem.Text = "Herramientas";
@@ -180,48 +184,48 @@ namespace TF.WinClient
             this.ImportTFMenuItem,
             this.ImportExcelMenuItem});
             this.ImportToolMenuItem.Name = "ImportToolMenuItem";
-            this.ImportToolMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportToolMenuItem.Size = new System.Drawing.Size(194, 22);
             this.ImportToolMenuItem.Text = "Importar traducción";
             // 
             // ImportTFMenuItem
             // 
             this.ImportTFMenuItem.Name = "ImportTFMenuItem";
-            this.ImportTFMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.ImportTFMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ImportTFMenuItem.Text = "Desde tf_*";
             this.ImportTFMenuItem.Click += new System.EventHandler(this.ImportTFMenuItem_Click);
             // 
             // ImportExcelMenuItem
             // 
             this.ImportExcelMenuItem.Name = "ImportExcelMenuItem";
-            this.ImportExcelMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.ImportExcelMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ImportExcelMenuItem.Text = "Desde Excel";
             this.ImportExcelMenuItem.Click += new System.EventHandler(this.ImportExcelMenuItem_Click);
             // 
             // exportarTraducciónToolStripMenuItem
             // 
             this.exportarTraducciónToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aExcelToolStripMenuItem});
+            this.ExportToExcelMenuItem});
             this.exportarTraducciónToolStripMenuItem.Name = "exportarTraducciónToolStripMenuItem";
-            this.exportarTraducciónToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportarTraducciónToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.exportarTraducciónToolStripMenuItem.Text = "Exportar traducción";
             // 
-            // aExcelToolStripMenuItem
+            // ExportToExcelMenuItem
             // 
-            this.aExcelToolStripMenuItem.Name = "aExcelToolStripMenuItem";
-            this.aExcelToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
-            this.aExcelToolStripMenuItem.Text = "A Excel";
-            this.aExcelToolStripMenuItem.Click += new System.EventHandler(this.aExcelToolStripMenuItem_Click);
+            this.ExportToExcelMenuItem.Name = "ExportToExcelMenuItem";
+            this.ExportToExcelMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ExportToExcelMenuItem.Text = "A Excel";
+            this.ExportToExcelMenuItem.Click += new System.EventHandler(this.ExportToExcelMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(191, 6);
             // 
             // SearchToolMenuItem
             // 
             this.SearchToolMenuItem.Name = "SearchToolMenuItem";
             this.SearchToolMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.SearchToolMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SearchToolMenuItem.Size = new System.Drawing.Size(194, 22);
             this.SearchToolMenuItem.Text = "Buscar...";
             this.SearchToolMenuItem.Click += new System.EventHandler(this.SearchToolMenuItem_Click);
             // 
@@ -229,9 +233,21 @@ namespace TF.WinClient
             // 
             this.SearchNextMenuItem.Name = "SearchNextMenuItem";
             this.SearchNextMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.SearchNextMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SearchNextMenuItem.Size = new System.Drawing.Size(194, 22);
             this.SearchNextMenuItem.Text = "Buscar siguiente";
             this.SearchNextMenuItem.Click += new System.EventHandler(this.SearchNextMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(191, 6);
+            // 
+            // CheckGrammarMenuItem
+            // 
+            this.CheckGrammarMenuItem.Name = "CheckGrammarMenuItem";
+            this.CheckGrammarMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.CheckGrammarMenuItem.Text = "Ortografía y Gramática";
+            this.CheckGrammarMenuItem.Click += new System.EventHandler(this.CheckGrammarMenuItem_Click);
             // 
             // ImportFileDialog
             // 
@@ -284,8 +300,8 @@ namespace TF.WinClient
             // colGroup
             // 
             this.colGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colGroup.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colGroup.DefaultCellStyle = dataGridViewCellStyle4;
             this.colGroup.FillWeight = 25F;
             this.colGroup.HeaderText = "Grupo";
             this.colGroup.Name = "colGroup";
@@ -295,8 +311,8 @@ namespace TF.WinClient
             // colOffset
             // 
             this.colOffset.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colOffset.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOffset.DefaultCellStyle = dataGridViewCellStyle5;
             this.colOffset.FillWeight = 15F;
             this.colOffset.HeaderText = "Offset";
             this.colOffset.Name = "colOffset";
@@ -306,8 +322,8 @@ namespace TF.WinClient
             // colOriginal
             // 
             this.colOriginal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colOriginal.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOriginal.DefaultCellStyle = dataGridViewCellStyle6;
             this.colOriginal.HeaderText = "Original";
             this.colOriginal.Name = "colOriginal";
             this.colOriginal.ReadOnly = true;
@@ -368,7 +384,7 @@ namespace TF.WinClient
         private ToolStripMenuItem SearchToolMenuItem;
         private ToolStripMenuItem SearchNextMenuItem;
         private ToolStripMenuItem exportarTraducciónToolStripMenuItem;
-        private ToolStripMenuItem aExcelToolStripMenuItem;
+        private ToolStripMenuItem ExportToExcelMenuItem;
         private SaveFileDialog ExportFileDialog;
         private DataGridViewTextBoxColumn colID;
         private DataGridViewTextBoxColumn colFile;
@@ -376,6 +392,8 @@ namespace TF.WinClient
         private DataGridViewTextBoxColumn colOffset;
         private DataGridViewTextBoxColumn colOriginal;
         private DataGridViewTextBoxColumn colTranslation;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripMenuItem CheckGrammarMenuItem;
     }
 }
 
