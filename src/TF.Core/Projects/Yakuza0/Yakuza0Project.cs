@@ -10,7 +10,7 @@ namespace TF.Core.Projects.Yakuza0
 {
     public class Yakuza0Project : Project
     {
-        public override string CompatibleFilesFilter => "Archivos de Texto de Yakuza 0|*.bin_c;*.msg;cmn.bin;Yakuza0.exe;*.mfp";
+        public override string CompatibleFilesFilter => "Archivos de Texto de Yakuza 0|*.bin_c;*.msg;*.bin;Yakuza0.exe;*.mfp";
 
         public static string ReadingReplacements(string input)
         {
