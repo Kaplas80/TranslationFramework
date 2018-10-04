@@ -493,13 +493,34 @@ namespace TF.WinClient
             }
         }
 
-        private void CheckGrammar()
+        private void CheckGrammarFromStart()
         {
             if (_openProject == null)
             {
                 return;
             }
 
+            CheckGrammar(0);
+        }
+
+        private void CheckGrammarFromCurrentPosition()
+        {
+            if (_openProject == null)
+            {
+                return;
+            }
+
+            var selectedRow = 0;
+            if (StringsDataGrid.SelectedCells.Count > 0)
+            {
+                selectedRow = StringsDataGrid.SelectedCells[0].RowIndex;
+            }
+
+            CheckGrammar(selectedRow);
+        }
+
+        private void CheckGrammar(int startRow)
+        {
             var client = new RestClient("http://localhost:8081/v2");
 
             if (!IsGrammarServerEnabled(client))
@@ -511,7 +532,8 @@ namespace TF.WinClient
                 return;
             }
 
-            var i = 0;
+            var selectedRow = StringsDataGrid.SelectedCells[0].RowIndex;
+            var i = startRow;
             while (i < StringsDataGrid.RowCount)
             {
                 var tfString = (TFString) StringsDataGrid.Rows[i].Tag;
@@ -523,6 +545,13 @@ namespace TF.WinClient
                 {
                     var numBeginSpaces = CountStartSpaces(translation);
                     translation = translation.TrimStart(' ');
+
+                    var linebreak = "\\n";
+                    if (translation.Contains("\\r\\n"))
+                    {
+                        linebreak = "\\r\\n";
+                    }
+
                     translation = translation.Replace("\\r\\n", "\r\n");
                     translation = translation.Replace("\\n", "\n");
 
@@ -543,8 +572,7 @@ namespace TF.WinClient
                                 {
                                     correctedTranslation = correctedTranslation.Insert(0, " ");
                                 }
-                                correctedTranslation = correctedTranslation.Replace("\r\n", "\\r\\n");
-                                correctedTranslation = correctedTranslation.Replace("\n", "\\n");
+                                correctedTranslation = correctedTranslation.Replace("\n", linebreak);
                                 tfString.Translation = correctedTranslation;
                             }
                             else if (result == DialogResult.Cancel)
@@ -568,6 +596,8 @@ namespace TF.WinClient
 
             StringsDataGrid.Rows.Clear();
             LoadDataGrid();
+
+            StringsDataGrid.FirstDisplayedScrollingRowIndex = selectedRow;
         }
 
         private static int CountStartSpaces(string text)

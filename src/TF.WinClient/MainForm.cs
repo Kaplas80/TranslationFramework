@@ -173,9 +173,14 @@ namespace TF.WinClient
             ExportExcel();
         }
 
-        private void CheckGrammarMenuItem_Click(object sender, EventArgs e)
+        private void CheckGrammarFromStartMenuItem_Click(object sender, EventArgs e)
         {
-            CheckGrammar();
+            CheckGrammarFromStart();
+        }
+
+        private void CheckGrammarFromCurrentMenuItem_Click(object sender, EventArgs e)
+        {
+            CheckGrammarFromCurrentPosition();
         }
     }
 }

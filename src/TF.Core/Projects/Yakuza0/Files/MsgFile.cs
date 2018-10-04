@@ -395,6 +395,10 @@ namespace TF.Core.Projects.Yakuza0.Files
                     UpdatePauses(s, tuple.Item2);
                 }
 
+                s.Seek(value.PropertiesOffset, SeekOrigin.Begin);
+                var length = tuple.Item1.Replace("\\r\\n", "\n").GetLength(options.SelectedEncoding);
+                UpdateLength(s, (short) length);
+
                 s.Seek(pos, SeekOrigin.Begin);
             }
         }
@@ -420,6 +424,27 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                 temp = s.ReadBytes(16);
             }
+        }
+
+        private void UpdateLength(Stream s, short length)
+        {
+            var temp = s.ReadBytes(16);
+
+            while (temp[0] != 0x01 || temp[1] != 0x01)
+            {
+                if ((temp[0] == 0x01 && temp[2] == 0x20) || (temp[0] == 0x02 && temp[1] == 0x0E && temp[2] == 0x00 && temp[3] == 0x01))
+                {
+                    s.Seek(-10, SeekOrigin.Current);
+                    s.WriteValueS16(length, Endianness);
+                    s.Seek(8, SeekOrigin.Current);
+                }
+
+                temp = s.ReadBytes(16);
+            }
+
+            s.Seek(-10, SeekOrigin.Current);
+            s.WriteValueS16(length, Endianness);
+            s.Seek(8, SeekOrigin.Current);
         }
 
         private Tuple<string, IList<byte>> ParsePauses(string str)

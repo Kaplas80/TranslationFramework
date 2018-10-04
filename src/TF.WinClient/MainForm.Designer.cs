@@ -34,9 +34,9 @@ namespace TF.WinClient
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.UsedCharLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenuBar = new System.Windows.Forms.MenuStrip();
@@ -71,6 +71,8 @@ namespace TF.WinClient
             this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.CheckGrammarFromStartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CheckGrammarFromCurrentMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
@@ -190,14 +192,14 @@ namespace TF.WinClient
             // ImportTFMenuItem
             // 
             this.ImportTFMenuItem.Name = "ImportTFMenuItem";
-            this.ImportTFMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportTFMenuItem.Size = new System.Drawing.Size(135, 22);
             this.ImportTFMenuItem.Text = "Desde tf_*";
             this.ImportTFMenuItem.Click += new System.EventHandler(this.ImportTFMenuItem_Click);
             // 
             // ImportExcelMenuItem
             // 
             this.ImportExcelMenuItem.Name = "ImportExcelMenuItem";
-            this.ImportExcelMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportExcelMenuItem.Size = new System.Drawing.Size(135, 22);
             this.ImportExcelMenuItem.Text = "Desde Excel";
             this.ImportExcelMenuItem.Click += new System.EventHandler(this.ImportExcelMenuItem_Click);
             // 
@@ -212,7 +214,7 @@ namespace TF.WinClient
             // ExportToExcelMenuItem
             // 
             this.ExportToExcelMenuItem.Name = "ExportToExcelMenuItem";
-            this.ExportToExcelMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ExportToExcelMenuItem.Size = new System.Drawing.Size(111, 22);
             this.ExportToExcelMenuItem.Text = "A Excel";
             this.ExportToExcelMenuItem.Click += new System.EventHandler(this.ExportToExcelMenuItem_Click);
             // 
@@ -244,10 +246,12 @@ namespace TF.WinClient
             // 
             // CheckGrammarMenuItem
             // 
+            this.CheckGrammarMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CheckGrammarFromStartMenuItem,
+            this.CheckGrammarFromCurrentMenuItem});
             this.CheckGrammarMenuItem.Name = "CheckGrammarMenuItem";
             this.CheckGrammarMenuItem.Size = new System.Drawing.Size(194, 22);
             this.CheckGrammarMenuItem.Text = "Ortografía y Gramática";
-            this.CheckGrammarMenuItem.Click += new System.EventHandler(this.CheckGrammarMenuItem_Click);
             // 
             // ImportFileDialog
             // 
@@ -300,8 +304,8 @@ namespace TF.WinClient
             // colGroup
             // 
             this.colGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colGroup.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colGroup.DefaultCellStyle = dataGridViewCellStyle7;
             this.colGroup.FillWeight = 25F;
             this.colGroup.HeaderText = "Grupo";
             this.colGroup.Name = "colGroup";
@@ -311,8 +315,8 @@ namespace TF.WinClient
             // colOffset
             // 
             this.colOffset.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colOffset.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOffset.DefaultCellStyle = dataGridViewCellStyle8;
             this.colOffset.FillWeight = 15F;
             this.colOffset.HeaderText = "Offset";
             this.colOffset.Name = "colOffset";
@@ -322,8 +326,8 @@ namespace TF.WinClient
             // colOriginal
             // 
             this.colOriginal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colOriginal.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOriginal.DefaultCellStyle = dataGridViewCellStyle9;
             this.colOriginal.HeaderText = "Original";
             this.colOriginal.Name = "colOriginal";
             this.colOriginal.ReadOnly = true;
@@ -335,6 +339,20 @@ namespace TF.WinClient
             this.colTranslation.HeaderText = "Traducción";
             this.colTranslation.Name = "colTranslation";
             this.colTranslation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // CheckGrammarFromStartMenuItem
+            // 
+            this.CheckGrammarFromStartMenuItem.Name = "CheckGrammarFromStartMenuItem";
+            this.CheckGrammarFromStartMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.CheckGrammarFromStartMenuItem.Text = "Desde el inicio";
+            this.CheckGrammarFromStartMenuItem.Click += new System.EventHandler(this.CheckGrammarFromStartMenuItem_Click);
+            // 
+            // CheckGrammarFromCurrentMenuItem
+            // 
+            this.CheckGrammarFromCurrentMenuItem.Name = "CheckGrammarFromCurrentMenuItem";
+            this.CheckGrammarFromCurrentMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.CheckGrammarFromCurrentMenuItem.Text = "Desde la posición actual";
+            this.CheckGrammarFromCurrentMenuItem.Click += new System.EventHandler(this.CheckGrammarFromCurrentMenuItem_Click);
             // 
             // MainForm
             // 
@@ -394,6 +412,8 @@ namespace TF.WinClient
         private DataGridViewTextBoxColumn colTranslation;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem CheckGrammarMenuItem;
+        private ToolStripMenuItem CheckGrammarFromStartMenuItem;
+        private ToolStripMenuItem CheckGrammarFromCurrentMenuItem;
     }
 }
 
