@@ -71,7 +71,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             }
         }
 
-        public override string FileType => "EPMB";
+        public override string FileType => "Mail";
         
         public override void Read(Stream s)
         {
