@@ -109,7 +109,8 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                 item.Data = str;
                 _dataList.Add(item);
-                _totalStringLength += item.Data.Original.GetLength(Encoding) + 1;
+                
+                _totalStringLength += item.Data.OriginalLength;
 
                 start = s.Position;
             }
@@ -299,7 +300,8 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Translation = str,
                 Offset = (int) pos,
                 Section = section,
-                Visible = !string.IsNullOrWhiteSpace(str)
+                Visible = !string.IsNullOrWhiteSpace(str),
+                OriginalLength = (int)(s.Position - pos)
             };
 
             return tfString;
@@ -322,7 +324,9 @@ namespace TF.Core.Projects.Yakuza0.Files
             {
                 var str = FindString(strings, string.Empty, item.Data.Offset);
 
-                newTotalStringLength += str.GetLength(options.SelectedEncoding) + 1;
+                var length = GetLength(str, options.SelectedEncoding, false, false) + 1;
+
+                newTotalStringLength += length;
             }
             var dif = newTotalStringLength - _totalStringLength;
 
@@ -396,11 +400,33 @@ namespace TF.Core.Projects.Yakuza0.Files
                 }
 
                 s.Seek(value.PropertiesOffset, SeekOrigin.Begin);
-                var length = tuple.Item1.Replace("\\r\\n", "\n").GetLength(options.SelectedEncoding);
+                var length = GetLength(tuple.Item1, options.SelectedEncoding, true, true);
                 UpdateLength(s, (short) length);
 
                 s.Seek(pos, SeekOrigin.Begin);
             }
+        }
+
+        private int GetLength(string str, Encoding enc, bool removeTags, bool removeBreaks)
+        {
+            var temp = str.Replace("^^", string.Empty);
+            
+            if (removeBreaks)
+            {
+                temp = temp.Replace("\\r\\n", " ");
+            }
+            else
+            {
+                temp = temp.Replace("\\r\\n", "\r\n");
+            }
+
+            if (removeTags)
+            {
+                temp = Regex.Replace(temp, @"<Color[^>]*>", string.Empty);
+                temp = Regex.Replace(temp, @"<[^>]*>", " ");
+            }
+
+            return temp.GetLength(enc);
         }
 
         private void UpdatePauses(Stream s, IList<byte> pauses)
@@ -432,7 +458,7 @@ namespace TF.Core.Projects.Yakuza0.Files
 
             while (temp[0] != 0x01 || temp[1] != 0x01)
             {
-                if ((temp[0] == 0x01 && temp[2] == 0x20) || (temp[0] == 0x02 && temp[1] == 0x0E && temp[2] == 0x00 && temp[3] == 0x01))
+                if (temp[0] == 0x01 && temp[2] == 0x20)
                 {
                     s.Seek(-10, SeekOrigin.Current);
                     s.WriteValueS16(length, Endianness);
@@ -475,7 +501,8 @@ namespace TF.Core.Projects.Yakuza0.Files
             {
                 var str = FindString(strings, string.Empty, item.Data.Offset);
 
-                newTotalStringLength += str.GetLength(options.SelectedEncoding) + 1;
+                var length = GetLength(str, options.SelectedEncoding, false, false) + 1;
+                newTotalStringLength += length;
             }
             var dif = newTotalStringLength - _totalStringLength;
 

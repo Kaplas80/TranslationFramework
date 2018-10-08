@@ -15,5 +15,7 @@
         public string Translation { get; set; }
 
         public bool Visible { get; set; }
+
+        public int OriginalLength { get; set; }
     }
 }
