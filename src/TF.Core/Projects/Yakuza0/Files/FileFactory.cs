@@ -125,6 +125,11 @@ namespace TF.Core.Projects.Yakuza0.Files
                 return new BarFile(fileName);
             }
 
+            if (fileName.EndsWith(".imb"))
+            {
+                return new ImbFile(fileName);
+            }
+
             return null;
         }
     }

@@ -87,6 +87,7 @@
     <Compile Include="Projects\Shenmue\ProjectInfo.cs" />
     <Compile Include="Projects\Shenmue\ShenmueProject.cs" />
     <Compile Include="Projects\Yakuza0\Files\BarFile.cs" />
+    <Compile Include="Projects\Yakuza0\Files\ImbFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\RestaurantFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\SnitchFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\AiPopupFile.cs" />

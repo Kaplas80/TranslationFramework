@@ -10,7 +10,7 @@ namespace TF.Core.Projects.Yakuza0
 {
     public class Yakuza0Project : Project
     {
-        public override string CompatibleFilesFilter => "Archivos de Texto de Yakuza 0|*.bin_c;*.msg;*.bin;Yakuza0.exe;*.mfp";
+        public override string CompatibleFilesFilter => "Archivos de Texto de Yakuza 0|*.bin_c;*.msg;*.bin;Yakuza0.exe;*.mfp;*.imb";
 
         public static string ReadingReplacements(string input)
         {
@@ -32,7 +32,7 @@ namespace TF.Core.Projects.Yakuza0
 
             result = result.Replace("\\r\\n", "\r\n");
             result = result.Replace("\\n", "\n");
-            
+            result = result.Replace("¥", "\\");
             result = result.Replace("™", "\u007F");
 
             return result;

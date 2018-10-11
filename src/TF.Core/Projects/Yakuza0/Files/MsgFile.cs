@@ -119,7 +119,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             _stringProperties = s.ReadBytes(_firstStringOffset - _firstPropertyOffset);
         }
 
-        private void InsertPauses(TFString str, IList<byte> pauses)
+        private void InsertPauses(TFString str, IList<short> pauses)
         {
             var strClean = RemoveTags(str.Original);
             var strPauses = AddPauses(strClean, pauses);
@@ -201,7 +201,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             return sb.ToString();
         }
 
-        private string AddPauses(string strClean, IList<byte> pauses)
+        private string AddPauses(string strClean, IList<short> pauses)
         {
             var result = strClean;
             for (var i = pauses.Count - 1; i >= 0; i--)
@@ -220,16 +220,16 @@ namespace TF.Core.Projects.Yakuza0.Files
             return Regex.Replace(temp, @"<[^>]*>", " ");
         }
 
-        private IList<byte> GetPauses(Stream s)
+        private IList<short> GetPauses(Stream s)
         {
-            var result = new List<byte>();
+            var result = new List<short>();
             var temp = s.ReadBytes(16);
 
             while (temp[0] != 0x01 || temp[1] != 0x01)
             {
                 if (temp[0] == 0x02 && temp[1] == 0x09)
                 {
-                    var pause = temp[7];
+                    var pause =(short) (temp[6] * 256 + temp[7]);
                     result.Add(pause);
                 }
 
@@ -453,7 +453,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             return temp.GetLength(enc);
         }
 
-        private void UpdatePauses(Stream s, IList<byte> pauses)
+        private void UpdatePauses(Stream s, IList<short> pauses)
         {
             var temp = s.ReadBytes(16);
 
@@ -464,11 +464,10 @@ namespace TF.Core.Projects.Yakuza0.Files
                 {
                     if (i < pauses.Count)
                     {
-                        temp[7] = pauses[i];
+                        s.Seek(-10, SeekOrigin.Current);
+                        s.WriteValueS16(pauses[i], Endianness);
+                        s.Seek(8, SeekOrigin.Current);
                         i++;
-
-                        s.Seek(-16, SeekOrigin.Current);
-                        s.WriteBytes(temp);
                     }
                 }
 
@@ -489,6 +488,13 @@ namespace TF.Core.Projects.Yakuza0.Files
                     s.Seek(8, SeekOrigin.Current);
                 }
 
+                if (temp[0] == 0x03 && temp[1] == 0x01 && temp[2] == 0x00 && temp[3] == 0x02)
+                {
+                    s.Seek(-10, SeekOrigin.Current);
+                    s.WriteValueS16(length, Endianness);
+                    s.Seek(8, SeekOrigin.Current);
+                }
+
                 temp = s.ReadBytes(16);
             }
 
@@ -497,9 +503,9 @@ namespace TF.Core.Projects.Yakuza0.Files
             s.Seek(8, SeekOrigin.Current);
         }
 
-        private Tuple<string, IList<byte>> ParsePauses(string str)
+        private Tuple<string, IList<short>> ParsePauses(string str)
         {
-            var pauses = new List<byte>();
+            var pauses = new List<short>();
 
             var temp = RemoveTags(str);
             if (temp.Contains("^^"))
@@ -508,14 +514,14 @@ namespace TF.Core.Projects.Yakuza0.Files
                 while (i > -1)
                 {
                     var previousCount = pauses.Count;
-                    pauses.Add((byte) (i - 2 * previousCount));
+                    pauses.Add((short) (i - 2 * previousCount));
                     i = temp.IndexOf("^^", i + 2, StringComparison.Ordinal);
                 }
             }
 
             var strResult = str.Replace("^^", string.Empty);
 
-            return new Tuple<string, IList<byte>>(strResult, pauses);
+            return new Tuple<string, IList<short>>(strResult, pauses);
         }
 
         private void WriteRemainder(Stream s, IList<TFString> strings, ExportOptions options)

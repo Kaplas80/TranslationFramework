@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TF.Core", "TF.Core\TF.Core.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TF.WinClient", "TF.WinClient\TF.WinClient.csproj", "{5D7A7B95-BB46-47B7-9484-652C4C518693}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yakuza0ExeStrings", "Yakuza0ExeStrings\Yakuza0ExeStrings.csproj", "{6489B2CF-DC08-4A82-824A-8BD8C7AA1CFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5D7A7B95-BB46-47B7-9484-652C4C518693}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D7A7B95-BB46-47B7-9484-652C4C518693}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D7A7B95-BB46-47B7-9484-652C4C518693}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6489B2CF-DC08-4A82-824A-8BD8C7AA1CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6489B2CF-DC08-4A82-824A-8BD8C7AA1CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6489B2CF-DC08-4A82-824A-8BD8C7AA1CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6489B2CF-DC08-4A82-824A-8BD8C7AA1CFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
