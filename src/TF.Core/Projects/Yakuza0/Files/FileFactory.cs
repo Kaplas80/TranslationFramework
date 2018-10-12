@@ -130,6 +130,11 @@ namespace TF.Core.Projects.Yakuza0.Files
                 return new ImbFile(fileName);
             }
 
+            if (fileName.EndsWith("street_name_c.dat"))
+            {
+                return new StreetNameFile(fileName);
+            }
+
             return null;
         }
     }

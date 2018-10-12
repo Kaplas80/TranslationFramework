@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Gibbed.IO;
 
 namespace TF.Core
 {
@@ -124,6 +125,13 @@ namespace TF.Core
                 }
                 return stream.ToArray();
             }
+        }
+
+        public static short PeekValueS16(this Stream s, Endian endian)
+        {
+            var value = s.ReadValueS16(endian);
+            s.Seek(-2, SeekOrigin.Current);
+            return value;
         }
     }
 }
