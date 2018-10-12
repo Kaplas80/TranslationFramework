@@ -96,7 +96,8 @@ namespace TF.WinClient
             this.EncodingCombo.FormattingEnabled = true;
             this.EncodingCombo.Items.AddRange(new object[] {
             "ISO-8859-1",
-            "UTF-8"});
+            "UTF-8",
+            "UTF-16"});
             this.EncodingCombo.Location = new System.Drawing.Point(148, 204);
             this.EncodingCombo.Name = "EncodingCombo";
             this.EncodingCombo.Size = new System.Drawing.Size(212, 21);

@@ -268,8 +268,8 @@ namespace TF.WinClient
 
         private void UpdateProcessedStringsLabel()
         {
-            var totalStrings = _openProject.Strings.Count;
-            var modifiedStrings = _openProject.Strings.Count(x => x.Original != x.Translation);
+            var totalStrings = _openProject.Strings.Count(x => x.Visible);
+            var modifiedStrings = _openProject.Strings.Count(x => x.Visible && (x.Original != x.Translation));
             UsedCharLabel.Text = $"Cadenas modificadas: {modifiedStrings} de {totalStrings}";
         }
 
@@ -481,12 +481,12 @@ namespace TF.WinClient
             {
                 var sl = new SLDocument();
 
-                for (var i = 0; i < _openProject.Strings.Count; i++)
+                var row = 1;
+                foreach (var str in _openProject.Strings.Where(x => x.Visible))
                 {
-                    var str = _openProject.Strings[i];
-
-                    sl.SetCellValue(i+1, 1, str.Original);
-                    sl.SetCellValue(i+1, 2, str.Translation);
+                    sl.SetCellValue(row, 1, str.Original);
+                    sl.SetCellValue(row, 2, str.Translation);
+                    row++;
                 }
 
                 sl.SaveAs(ExportFileDialog.FileName);
