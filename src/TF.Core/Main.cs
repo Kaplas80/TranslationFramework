@@ -9,6 +9,7 @@ namespace TF.Core
         private static readonly ISupportedProject SAO_HF = new Projects.SAO_HF.ProjectInfo();
         private static readonly ISupportedProject SRR = new Projects.SRR.ProjectInfo();
         private static readonly ISupportedProject Disgaea = new Projects.Disgaea.ProjectInfo();
+        private static readonly ISupportedProject BattleRealms = new Projects.BattleRealms.ProjectInfo();
         private static readonly List<ISupportedProject> SupportedProjects;
 
         static Main()
@@ -19,7 +20,8 @@ namespace TF.Core
                 Shenmue,
                 SAO_HF,
                 SRR,
-                Disgaea
+                Disgaea,
+                BattleRealms
             };
         }
 

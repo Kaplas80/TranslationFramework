@@ -1,5 +1,6 @@
 ﻿using System;
 using TF.Core.Entities;
+using TF.Core.Projects.BattleRealms;
 using TF.Core.Projects.Disgaea;
 using TF.Core.Projects.SAO_HF;
 using TF.Core.Projects.Shenmue;
@@ -35,6 +36,11 @@ namespace TF.Core
             if (projectPath.EndsWith("tf_dsg"))
             {
                 return DisgaeaProject.GetProject(projectPath);
+            }
+
+            if (projectPath.EndsWith("tf_btr"))
+            {
+                return BattleRealmsProject.GetProject(projectPath);
             }
 
             throw new Exception();
