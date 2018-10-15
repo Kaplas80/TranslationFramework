@@ -129,7 +129,7 @@ namespace TF.Core.Projects.MegaManLegends.Files
 
                 if (startPos != -1)
                 {
-                    s.Seek(startPos + 3, SeekOrigin.Begin);
+                    s.Seek(startPos, SeekOrigin.Begin);
 
                     while (s.Position < s.Length)
                     {
@@ -137,54 +137,107 @@ namespace TF.Core.Projects.MegaManLegends.Files
 
                         switch (type)
                         {
+                            case 0x82:
                             case 0xE9:
                             {
                                 var tfString = ReadString(s);
-                                result.Add(tfString);
+                                if (tfString.Original != null)
+                                {
+                                    result.Add(tfString);
+                                }
                                 break;
                             }
-                            case 0x85:
                             case 0x8B:
                             {
                                 s.Seek(4, SeekOrigin.Current);
                                 var tfString = ReadString(s);
-                                result.Add(tfString);
+                                if (tfString.Original != null)
+                                {
+                                    result.Add(tfString);
+                                }
                                 break;
                             }
+                            
+                            case 0x83:
                             case 0x86:
+                            case 0x87:
+                            case 0x8A:
+                            case 0x9C:
                             {
                                 s.Seek(2, SeekOrigin.Current);
                                 var tfString = ReadString(s);
-                                result.Add(tfString);
+                                if (tfString.Original != null)
+                                {
+                                    result.Add(tfString);
+                                }
                                 break;
                             }
+                            
+                            case 0xA0:
+                            {
+                                s.Seek(3, SeekOrigin.Current);
+                                var tfString = ReadString(s);
+                                if (tfString.Original != null)
+                                {
+                                    result.Add(tfString);
+                                }
+                                break;
+                            }
+
+                            case 0x85:
+                            case 0xAB:
+                            {
+                                s.Seek(1, SeekOrigin.Current);
+                                break;
+                            }
+
                             case 0x8F:
                             case 0x92:
                             case 0x95:
-                            case 0x9C:
-                            case 0xA0:
+                            case 0x96:
                             {
                                 s.Seek(2, SeekOrigin.Current);
                                 break;
                             }
+                            
                             case 0x93:
                             case 0x9B:
+                            case 0xFF:
                             {
                                 s.Seek(3, SeekOrigin.Current);
                                 break;
                             }
+
+                            case 0xBB:
                             case 0xA5:
                             {
-                                s.Seek(5, SeekOrigin.Current);
+                                s.Seek(4, SeekOrigin.Current);
                                 break;
                             }
+
                             case 0x88:
                             {
                                 s.Seek(6, SeekOrigin.Current);
                                 break;
                             }
+                            
+                            case 0xCC:
+                            {
+                                s.Seek(7, SeekOrigin.Current);
+                                break;
+                            }
                             default:
                             {
+                                if (type > 0x09 && type < 0x60)
+                                {
+                                    s.Seek(-1, SeekOrigin.Current);
+                                    var tfString = ReadString(s);
+                                    if (tfString.Original != null)
+                                    {
+                                        result.Add(tfString);
+                                    }
+                                }
+
                                 break;
                             }
                         }
