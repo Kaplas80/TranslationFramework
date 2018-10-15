@@ -125,13 +125,34 @@ namespace TF.Core.Projects.Yakuza0.Files
             {
                 var item = _dataList[i];
                 s.WriteValueS32(item.AdditionalValue, Endianness);
-                WriteString(s, strings[i].Translation, options);
+                WriteString(s, strings[i], options);
             }
         }
 
-        private static void WriteString(Stream s, string str, ExportOptions options)
+        private void WriteString(Stream s, TFString tfString, ExportOptions options)
         {
-            if (options.CharReplacement != 0)
+            var pos = s.Position;
+            var zeros = new byte[64];
+            s.WriteBytes(zeros);
+            s.Seek(pos, SeekOrigin.Begin);
+
+            string str;
+            Encoding enc;
+            bool replace;
+
+            if (tfString.Original == tfString.Translation)
+            {
+                str = tfString.Original;
+                enc = Encoding;
+                replace = false;
+            }
+            else
+            {
+                str = tfString.Translation;
+                enc = options.SelectedEncoding;
+                replace = options.CharReplacement != 0;
+            }
+            if (replace)
             {
                 str = Utils.ReplaceChars(str, options.CharReplacementList);
             }
@@ -142,10 +163,9 @@ namespace TF.Core.Projects.Yakuza0.Files
                 str = str.Substring(0, 63);
             }
 
-            s.WriteStringZ(str, options.SelectedEncoding);
+            s.WriteStringZ(str, enc);
 
-            var zeros = new byte[64 - (str.GetLength(options.SelectedEncoding) + 1)];
-            s.WriteBytes(zeros);
+            s.Seek(pos + 64, SeekOrigin.Begin);
         }
     }
 }

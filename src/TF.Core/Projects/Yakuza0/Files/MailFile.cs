@@ -232,8 +232,16 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                     var name = FindString(strings, "SENDER", item.Sender.OriginalOffset);
                     WriteString(s, name, options);
-                    
-                    stringsOffset += name.GetLength(options.SelectedEncoding) + 1;
+
+                    if (name.Original == name.Translation)
+                    {
+                        stringsOffset += name.Original.GetLength(Encoding) + 1;
+                    }
+                    else
+                    {
+                        stringsOffset += name.Translation.GetLength(options.SelectedEncoding) + 1;
+                    }
+
                     s.Seek(pos + 8, SeekOrigin.Begin);
                 }
                 else
@@ -257,7 +265,14 @@ namespace TF.Core.Projects.Yakuza0.Files
                     var str = FindString(strings, string.Empty, item.SubMessage.Offset);
                     WriteString(s, str, options);
                     
-                    stringsOffset += str.GetLength(options.SelectedEncoding) + 1;
+                    if (str.Original == str.Translation)
+                    {
+                        stringsOffset += str.Original.GetLength(Encoding) + 1;
+                    }
+                    else
+                    {
+                        stringsOffset += str.Translation.GetLength(options.SelectedEncoding) + 1;
+                    }
                 }
 
                 s.Seek(pos + 24, SeekOrigin.Begin);
@@ -274,14 +289,21 @@ namespace TF.Core.Projects.Yakuza0.Files
                     
                     var str = FindString(strings, string.Empty, value.Offset);
                     WriteString(s, str, options);
-                    stringsOffset += str.GetLength(options.SelectedEncoding) + 1;
+                    if (str.Original == str.Translation)
+                    {
+                        stringsOffset += str.Original.GetLength(Encoding) + 1;
+                    }
+                    else
+                    {
+                        stringsOffset += str.Translation.GetLength(options.SelectedEncoding) + 1;
+                    }
                 }
                 
                 s.Seek(pos + itemLength, SeekOrigin.Begin);
             }
         }
 
-        private static string FindString(IList<TFString> strings, string section, int offset)
+        private static TFString FindString(IList<TFString> strings, string section, int offset)
         {
             if (string.IsNullOrEmpty(section))
             {
@@ -289,7 +311,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 {
                     if (s.Offset == offset)
                     {
-                        return s.Translation;
+                        return s;
                     }
                 }
             }
@@ -299,23 +321,36 @@ namespace TF.Core.Projects.Yakuza0.Files
                 {
                     if (s.Section == section && s.Offset == offset)
                     {
-                        return s.Translation;
+                        return s;
                     }
                 }
             }
 
-            return string.Empty;
+            return null;
         }
 
-        private static void WriteString(Stream s, string str, ExportOptions options)
+        private void WriteString(Stream s, TFString str, ExportOptions options)
         {
-            if (options.CharReplacement != 0)
+            if (str.Original == str.Translation)
             {
-                str = Utils.ReplaceChars(str, options.CharReplacementList);
-            }
-            str = Yakuza0Project.WritingReplacements(str);
+                var aux = str.Original;
 
-            s.WriteStringZ(str, options.SelectedEncoding);
+                aux = Yakuza0Project.WritingReplacements(aux);
+
+                s.WriteStringZ(aux, Encoding);
+            }
+            else
+            {
+                var aux = str.Translation;
+                if (options.CharReplacement != 0)
+                {
+                    aux = Utils.ReplaceChars(aux, options.CharReplacementList);
+                }
+
+                aux = Yakuza0Project.WritingReplacements(aux);
+
+                s.WriteStringZ(aux, options.SelectedEncoding);
+            }
         }
     }
 }

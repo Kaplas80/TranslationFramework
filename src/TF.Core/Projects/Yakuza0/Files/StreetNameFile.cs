@@ -29,7 +29,6 @@ namespace TF.Core.Projects.Yakuza0.Files
             public TFString Data;
         }
 
-        private int _header;
         private List<Section> _sections;
 
         public StreetNameFile(string fileName) : base(fileName)

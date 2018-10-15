@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Gibbed.IO;
@@ -317,12 +318,19 @@ namespace TF.Core.Projects.Yakuza0.Files
             }
         }
 
+        public void Save(Stream s, byte[] originalContent, IList<TFString> strings, ExportOptions options)
+        {
+            WriteHeader(s, strings, options);
+            WriteData(s, strings, options);
+            WriteRemainder(s, strings, options);
+        }
+
         private void WriteHeader(Stream s, IList<TFString> strings, ExportOptions options)
         {
             var newTotalStringLength = 0;
             foreach (var item in _dataList)
             {
-                var str = FindString(strings, string.Empty, item.Data.Offset);
+                var str = FindString(strings, item.Data.Offset);
 
                 if (str.Original == str.Translation)
                 {
@@ -340,7 +348,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             var newTotalNamesLength = 0;
             foreach (var item in _namesList)
             {
-                var str = FindString(strings, "NAMES", item.Offset);
+                var str = FindString(strings, item.Offset);
 
                 if (str.Original == str.Translation)
                 {
@@ -403,7 +411,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 pos = s.Position;
                 s.Seek(stringOffset, SeekOrigin.Begin);
 
-                var str = FindString(strings, string.Empty, value.Data.Offset);
+                var str = FindString(strings, value.Data.Offset);
 
                 var isOriginal = str.Original == str.Translation;
 
@@ -529,7 +537,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             var newTotalStringLength = 0;
             foreach (var item in _dataList)
             {
-                var str = FindString(strings, string.Empty, item.Data.Offset);
+                var str = FindString(strings, item.Data.Offset);
 
                 if (str.Original == str.Translation)
                 {
@@ -547,7 +555,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             var newTotalNamesLength = 0;
             foreach (var item in _namesList)
             {
-                var str = FindString(strings, "NAMES", item.Offset);
+                var str = FindString(strings, item.Offset);
 
                 if (str.Original == str.Translation)
                 {
@@ -604,7 +612,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                     var pos = s.Position;
                     s.Seek(stringOffset, SeekOrigin.Begin);
                     
-                    var str = FindString(strings, "NAMES", _namesList[i].Offset);
+                    var str = FindString(strings, _namesList[i].Offset);
                     WriteString(s, str, options);
 
                     stringOffset = (int) s.Position;
@@ -620,30 +628,9 @@ namespace TF.Core.Projects.Yakuza0.Files
             }
         }
 
-        private static TFString FindString(IList<TFString> strings, string section, int offset)
+        private static TFString FindString(IEnumerable<TFString> strings, int offset)
         {
-            if (string.IsNullOrEmpty(section))
-            {
-                foreach (var s in strings)
-                {
-                    if (s.Offset == offset)
-                    {
-                        return s;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var s in strings)
-                {
-                    if (s.Section == section && s.Offset == offset)
-                    {
-                        return s;
-                    }
-                }
-            }
-
-            return null;
+            return strings.FirstOrDefault(s => s.Offset == offset);
         }
 
         private void WriteString(Stream s, TFString str, ExportOptions options)

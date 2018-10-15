@@ -14,7 +14,6 @@ namespace TF.Core.Entities
         public virtual IList<TFString> Strings { get; }
 
         public abstract Encoding Encoding { get; }
-
         
         public abstract Endian Endianness { get; }
         public abstract string FileType { get; }

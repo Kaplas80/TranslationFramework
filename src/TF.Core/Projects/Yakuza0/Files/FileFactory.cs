@@ -135,6 +135,12 @@ namespace TF.Core.Projects.Yakuza0.Files
                 return new StreetNameFile(fileName);
             }
 
+            var fileName2 = Path.GetFileName(fileName);
+            if (fileName2.StartsWith("pac_") && fileName2.EndsWith(".bin"))
+            {
+                return new PacFile(fileName);
+            }
+
             return null;
         }
     }

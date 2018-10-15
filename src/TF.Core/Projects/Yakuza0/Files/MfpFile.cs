@@ -84,7 +84,22 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                     fs.Seek(item.Offset, SeekOrigin.Begin);
 
-                    var str = strings[i].Translation;
+                    string str;
+                    Encoding enc;
+                    bool replace;
+
+                    if (strings[i].Original == strings[i].Translation)
+                    {
+                        str = strings[i].Original;
+                        enc = Encoding;
+                        replace = false;
+                    }
+                    else
+                    {
+                        str = strings[i].Translation;
+                        enc = options.SelectedEncoding;
+                        replace = options.CharReplacement != 0;
+                    }
 
                     if (strings[i].Visible && !string.IsNullOrEmpty(str))
                     {
@@ -92,20 +107,20 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                         fs.WriteBytes(zeros);
 
-                        if (options.CharReplacement != 0)
+                        if (replace)
                         {
                             str = Utils.ReplaceChars(str, options.CharReplacementList);
                         }
 
                         str = Yakuza0Project.WritingReplacements(str);
 
-                        if (str.GetLength(options.SelectedEncoding) >= MAX_SIZE)
+                        if (str.GetLength(enc) >= MAX_SIZE)
                         {
                             str = str.Substring(0, MAX_SIZE - 1);
                         }
                         
                         fs.Seek(item.Offset, SeekOrigin.Begin);
-                        fs.WriteStringZ(str, options.SelectedEncoding);
+                        fs.WriteStringZ(str, enc);
                     }
                 }
             }

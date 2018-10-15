@@ -33,7 +33,8 @@ namespace TF.Core.Projects.Yakuza0
             result = result.Replace("\\r\\n", "\r\n");
             result = result.Replace("\\n", "\n");
             result = result.Replace("¥", "\\");
-            result = result.Replace("™", "\u007F");
+            result = result.Replace("™", "~");
+            result = result.Replace('\u00AE', '\u007F');
 
             return result;
         }
