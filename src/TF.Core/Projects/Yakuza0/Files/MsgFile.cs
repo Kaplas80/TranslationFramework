@@ -415,24 +415,26 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                 var isOriginal = str.Original == str.Translation;
 
-                var tuple = ParsePauses(str.Translation);
+                var translationTuple = ParsePauses(str.Translation);
+                var originalTuple = ParsePauses(str.Original);
 
-                WriteString(s, tuple.Item1, options, isOriginal);
+                WriteString(s, translationTuple.Item1, options, isOriginal);
                 
                 stringOffset = (int) s.Position;
 
-                if (tuple.Item2.Count > 0)
+                if (translationTuple.Item2.Count > 0)
                 {
                     s.Seek(value.PropertiesOffset, SeekOrigin.Begin);
-                    UpdatePauses(s, tuple.Item2);
+                    UpdatePauses(s, translationTuple.Item2);
                 }
 
                 s.Seek(value.PropertiesOffset, SeekOrigin.Begin);
 
                 if (!isOriginal)
                 {
-                    var length = GetLength(tuple.Item1, options.SelectedEncoding, true, true);
-                    UpdateLength(s, (short) length);
+                    var newLength = GetLength(translationTuple.Item1, options.SelectedEncoding, true, true);
+                    var originalLength = GetLength(originalTuple.Item1, Encoding, true, true);
+                    UpdateLength(s, (short) originalLength, (short) newLength);
                 }
 
                 s.Seek(pos, SeekOrigin.Begin);
@@ -483,23 +485,27 @@ namespace TF.Core.Projects.Yakuza0.Files
             }
         }
 
-        private void UpdateLength(Stream s, short length)
+        private void UpdateLength(Stream s, short originalLength, short newLength)
         {
             var temp = s.ReadBytes(16);
 
             while (temp[0] != 0x01 || temp[1] != 0x01)
             {
-                if (temp[0] == 0x01 && temp[2] == 0x20)
+                /*if ((temp[0] == 0x01 && temp[2] == 0x20) ||
+                    (temp[0] == 0x03 && temp[1] == 0x01 && temp[2] == 0x00 && temp[3] == 0x02) ||
+                    (temp[0] == 0x03 && temp[1] == 0x33 && temp[2] == 0x00 && temp[3] == 0x00) ||
+                    (temp[0] == 0x03 && temp[1] == 0x16 && temp[2] == 0x40 && temp[3] == 0x20))
                 {
                     s.Seek(-10, SeekOrigin.Current);
                     s.WriteValueS16(length, Endianness);
                     s.Seek(8, SeekOrigin.Current);
-                }
+                }*/
 
-                if (temp[0] == 0x03 && temp[1] == 0x01 && temp[2] == 0x00 && temp[3] == 0x02)
+                var value = temp[6] * 256 + temp[7];
+                if (value == originalLength || value > newLength)
                 {
                     s.Seek(-10, SeekOrigin.Current);
-                    s.WriteValueS16(length, Endianness);
+                    s.WriteValueS16(newLength, Endianness);
                     s.Seek(8, SeekOrigin.Current);
                 }
 
@@ -507,7 +513,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             }
 
             s.Seek(-10, SeekOrigin.Current);
-            s.WriteValueS16(length, Endianness);
+            s.WriteValueS16(newLength, Endianness);
             s.Seek(8, SeekOrigin.Current);
         }
 
