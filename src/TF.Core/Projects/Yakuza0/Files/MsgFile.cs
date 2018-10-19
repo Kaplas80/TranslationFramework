@@ -428,8 +428,16 @@ namespace TF.Core.Projects.Yakuza0.Files
                     UpdatePauses(s, translationTuple.Item2);
                 }
 
-                s.Seek(value.PropertiesOffset, SeekOrigin.Begin);
+                var colorTags = ParseTags(str.Translation);
+                
+                if (colorTags.Count > 0)
+                {
+                    var originalColorTags = ParseTags(str.Original);
+                    s.Seek(value.PropertiesOffset, SeekOrigin.Begin);
+                    UpdateColorTags(s, colorTags, originalColorTags);
+                }
 
+                s.Seek(value.PropertiesOffset, SeekOrigin.Begin);
                 if (!isOriginal)
                 {
                     var newLength = GetLength(translationTuple.Item1, options.SelectedEncoding, true, true);
@@ -438,6 +446,61 @@ namespace TF.Core.Projects.Yakuza0.Files
                 }
 
                 s.Seek(pos, SeekOrigin.Begin);
+            }
+        }
+
+        private List<Tuple<short, short>> ParseTags(string input)
+        {
+            var temp = input.Replace("^^", string.Empty);
+            temp = temp.Replace("\\r\\n", " ");
+            temp = Regex.Replace(temp, @"<^C[^>]*>", " ");
+
+            var result = new List<Tuple<short, short>>();
+            var matches = Regex.Matches(temp, @"<Color:[^>]*>");
+            var acum = 0;
+            for (var i = 0; i < matches.Count; i = i+2)
+            {
+                var pos1 = (short)(matches[i].Index - acum);
+                acum += matches[i].Length;
+                var pos2 = (short)(matches[i + 1].Index - acum);
+                acum += matches[i + 1].Length;
+
+                var t = new Tuple<short, short>(pos1, pos2);
+                result.Add(t);
+            }
+            return result;
+        }
+
+        private void UpdateColorTags(Stream s, List<Tuple<short, short>> newColorTags,
+            List<Tuple<short, short>> originalColorTags)
+        {
+            var pos = s.Position;
+
+            for (var i = 0; i < originalColorTags.Count; i++)
+            {
+                s.Seek(pos, SeekOrigin.Begin);
+                
+                var temp = s.ReadBytes(16);
+
+                while (temp[0] != 0x01 || temp[1] != 0x01)
+                {
+                    var value = temp[6] * 256 + temp[7];
+                    if (value == originalColorTags[i].Item1)
+                    {
+                        s.Seek(-10, SeekOrigin.Current);
+                        s.WriteValueS16(newColorTags[i].Item1, Endianness);
+                        s.Seek(8, SeekOrigin.Current);
+                    }
+
+                    if (value == originalColorTags[i].Item2)
+                    {
+                        s.Seek(-10, SeekOrigin.Current);
+                        s.WriteValueS16(newColorTags[i].Item2, Endianness);
+                        s.Seek(8, SeekOrigin.Current);
+                    }
+
+                    temp = s.ReadBytes(16);
+                }
             }
         }
 
@@ -491,16 +554,6 @@ namespace TF.Core.Projects.Yakuza0.Files
 
             while (temp[0] != 0x01 || temp[1] != 0x01)
             {
-                /*if ((temp[0] == 0x01 && temp[2] == 0x20) ||
-                    (temp[0] == 0x03 && temp[1] == 0x01 && temp[2] == 0x00 && temp[3] == 0x02) ||
-                    (temp[0] == 0x03 && temp[1] == 0x33 && temp[2] == 0x00 && temp[3] == 0x00) ||
-                    (temp[0] == 0x03 && temp[1] == 0x16 && temp[2] == 0x40 && temp[3] == 0x20))
-                {
-                    s.Seek(-10, SeekOrigin.Current);
-                    s.WriteValueS16(length, Endianness);
-                    s.Seek(8, SeekOrigin.Current);
-                }*/
-
                 var value = temp[6] * 256 + temp[7];
                 if (value == originalLength || value > newLength)
                 {
