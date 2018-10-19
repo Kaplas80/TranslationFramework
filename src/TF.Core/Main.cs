@@ -10,6 +10,7 @@ namespace TF.Core
         private static readonly ISupportedProject SRR = new Projects.SRR.ProjectInfo();
         private static readonly ISupportedProject Disgaea = new Projects.Disgaea.ProjectInfo();
         private static readonly ISupportedProject BattleRealms = new Projects.BattleRealms.ProjectInfo();
+        private static readonly ISupportedProject Infliction = new Projects.Infliction.ProjectInfo();
         private static readonly List<ISupportedProject> SupportedProjects;
 
         static Main()
@@ -21,7 +22,8 @@ namespace TF.Core
                 SAO_HF,
                 SRR,
                 Disgaea,
-                BattleRealms
+                BattleRealms,
+                Infliction
             };
         }
 

@@ -2,6 +2,7 @@
 using TF.Core.Entities;
 using TF.Core.Projects.BattleRealms;
 using TF.Core.Projects.Disgaea;
+using TF.Core.Projects.Infliction;
 using TF.Core.Projects.SAO_HF;
 using TF.Core.Projects.Shenmue;
 using TF.Core.Projects.SRR;
@@ -41,6 +42,11 @@ namespace TF.Core
             if (projectPath.EndsWith("tf_btr"))
             {
                 return BattleRealmsProject.GetProject(projectPath);
+            }
+
+            if (projectPath.EndsWith("tf_inf"))
+            {
+                return InflictionProject.GetProject(projectPath);
             }
 
             throw new Exception();
