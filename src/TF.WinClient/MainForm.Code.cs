@@ -68,9 +68,10 @@ namespace TF.WinClient
             if (result == DialogResult.OK)
             {
                 Project project = null;
-
+#if !DEBUG
                 try
                 {
+#endif
                     var i = 0;
                     while (File.Exists(SaveProjectFileDialog.FileName) && i < 10)
                     {
@@ -103,6 +104,7 @@ namespace TF.WinClient
 
                         Text = $"Translation Framework - {_openProject.Path}";
                     }
+#if !DEBUG
                 }
                 catch (Exception e)
                 {
@@ -113,6 +115,7 @@ namespace TF.WinClient
                     Cursor.Current = Cursors.Default;
                     Enabled = true;
                 }
+#endif
             }
         }
 
@@ -127,8 +130,10 @@ namespace TF.WinClient
             if (result == DialogResult.OK)
             {
                 Project project = null;
+#if !DEBUG
                 try
                 {
+#endif
                     Enabled = false;
                     Cursor.Current = Cursors.WaitCursor;
                     project = ProjectFactory.GetProject(OpenProjectFileDialog.FileName);
@@ -143,6 +148,7 @@ namespace TF.WinClient
                     LoadDataGrid();
 
                     Text = $"Translation Framework - {_openProject.Path}";
+#if !DEBUG
                 }
                 catch (Exception e)
                 {
@@ -153,6 +159,7 @@ namespace TF.WinClient
                     Cursor.Current = Cursors.Default;
                     Enabled = true;
                 }
+#endif
             }
         }
 
@@ -183,9 +190,12 @@ namespace TF.WinClient
 
                 foreach (var fileName in ImportFileDialog.FileNames)
                 {
+#if !DEBUG
                     try
                     {
+#endif
                         p.SetFile(fileName);
+#if !DEBUG
                     }
                     catch (Exception e)
                     {
@@ -193,6 +203,7 @@ namespace TF.WinClient
                         MessageBox.Show($"Error al abrir el fichero {fileName}.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Cursor.Current = Cursors.WaitCursor;
                     }
+#endif
                 }
                 Cursor.Current = Cursors.Default;
                 Enabled = true;

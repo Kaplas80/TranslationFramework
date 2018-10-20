@@ -4,6 +4,7 @@ using TF.Core.Projects.BattleRealms;
 using TF.Core.Projects.Disgaea;
 using TF.Core.Projects.SAO_HF;
 using TF.Core.Projects.Shenmue;
+using TF.Core.Projects.Spellforce2;
 using TF.Core.Projects.SRR;
 using TF.Core.Projects.Yakuza0;
 
@@ -41,6 +42,11 @@ namespace TF.Core
             if (projectPath.EndsWith("tf_btr"))
             {
                 return BattleRealmsProject.GetProject(projectPath);
+            }
+
+            if (projectPath.EndsWith("tf_spf2"))
+            {
+                return Spellforce2Project.GetProject(projectPath);
             }
 
             throw new Exception();
