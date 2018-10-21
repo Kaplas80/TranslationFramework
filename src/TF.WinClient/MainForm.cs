@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using TF.Core.Entities;
 
 namespace TF.WinClient
 {
@@ -82,25 +84,31 @@ namespace TF.WinClient
                 return;
             }
 
-            var strValue = e.Value.ToString();
-            var strSplit1 = strValue.Split(new[] {"\\r\\n"}, StringSplitOptions.None);
-            var strSplit2 = strValue.Split(new[] {"\\n"}, StringSplitOptions.None);
+            if (e.ColumnIndex == 5)
+            {
+                var tfString = (TFString) StringsDataGrid.Rows[e.RowIndex].Tag;
+
+                if (!e.State.HasFlag(DataGridViewElementStates.Selected) && (tfString.Original != tfString.Translation) && (!string.IsNullOrEmpty(tfString.Translation)))
+                {
+                    e.CellStyle.BackColor = Color.AntiqueWhite;
+                }
+            }
+
+            var lbPattern = @"(\\r\\n)|(\\n)";
+            var pausePattern = @"(\^\^)";
+            var tagPattern = @"(<[^>]*>)";
             
-            if (strSplit1.Length <= 1 && strSplit2.Length <= 1)
+            var strSplit = Regex.Split(e.Value.ToString(), $@"{lbPattern}|{pausePattern}|{tagPattern}");
+
+            if (strSplit.Length <= 1)
             {
                 return;
             }
 
-            var strSplit = strSplit1;
-            var separator = "\\r\\n";
-            if (strSplit1.Length <= 1 && strSplit2.Length > 1)
-            {
-                strSplit = strSplit2;
-                separator = "\\n";
-            }
-
             var defaultColor = e.State.HasFlag(DataGridViewElementStates.Selected) ? e.CellStyle.SelectionForeColor : e.CellStyle.ForeColor;
-            var alternateColor = Color.Red;
+            var lineBreakColor = Color.Red;
+            var pauseColor = Color.Brown;
+            var tagColor = e.State.HasFlag(DataGridViewElementStates.Selected) ? Color.Azure : Color.Blue;
 
             var rect = new Rectangle(e.CellBounds.X + 3, e.CellBounds.Y - 1, e.CellBounds.Width - 6, e.CellBounds.Height);
             var x = rect.X;
@@ -110,27 +118,34 @@ namespace TF.WinClient
 
             e.Paint(e.CellBounds, DataGridViewPaintParts.Background | DataGridViewPaintParts.Border | DataGridViewPaintParts.Focus | DataGridViewPaintParts.SelectionBackground);
 
-            var i = 0;
-            for (; i < strSplit.Length - 1; i++)
+            foreach (var s in strSplit)
             {
-                TextRenderer.DrawText(e.Graphics, strSplit[i], 
-                    e.CellStyle.Font, rect, defaultColor, formatFlags);
+                Color c;
+                if (Regex.IsMatch(s, lbPattern))
+                {
+                    c = lineBreakColor;
+                }
+                else if (Regex.IsMatch(s, tagPattern))
+                {
+                    c = tagColor;
+                }
+                else if (Regex.IsMatch(s, pausePattern))
+                {
+                    c = pauseColor;
+                }
+                else
+                {
+                    c = defaultColor;
+                }
+                
+                TextRenderer.DrawText(e.Graphics, s,
+                    e.CellStyle.Font, rect, c, formatFlags);
 
-                x += TextRenderer.MeasureText(e.Graphics, strSplit[i], e.CellStyle.Font, proposedSize, formatFlags).Width;
+                x += TextRenderer.MeasureText(e.Graphics, s, e.CellStyle.Font, proposedSize, formatFlags).Width;
 
-                rect.Width = rect.Width - (x - rect.X);
-                rect.X = x;
-                        
-                TextRenderer.DrawText(e.Graphics, separator, 
-                    e.CellStyle.Font, rect, alternateColor, formatFlags);
-
-                x += TextRenderer.MeasureText(e.Graphics, separator, e.CellStyle.Font, proposedSize, formatFlags).Width;
                 rect.Width = rect.Width - (x - rect.X);
                 rect.X = x;
             }
-
-            TextRenderer.DrawText(e.Graphics, strSplit[i], 
-                e.CellStyle.Font, rect, defaultColor, formatFlags);
 
             e.Handled = true;
         }
@@ -138,11 +153,6 @@ namespace TF.WinClient
         private void ImportTFMenuItem_Click(object sender, EventArgs e)
         {
             ImportTF();
-        }
-
-        private void ImportExcelMenuItem_Click(object sender, EventArgs e)
-        {
-            ImportExcel();
         }
 
         private void StringsDataGrid_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -168,11 +178,6 @@ namespace TF.WinClient
             DoSearch();
         }
 
-        private void ExportToExcelMenuItem_Click(object sender, EventArgs e)
-        {
-            ExportExcel();
-        }
-
         private void CheckGrammarFromStartMenuItem_Click(object sender, EventArgs e)
         {
             CheckGrammarFromStart();
@@ -181,6 +186,26 @@ namespace TF.WinClient
         private void CheckGrammarFromCurrentMenuItem_Click(object sender, EventArgs e)
         {
             CheckGrammarFromCurrentPosition();
+        }
+
+        private void ImportSimpleExcelMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportSimpleExcel();
+        }
+
+        private void ImportCompleteExcelMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportCompleteExcel();
+        }
+
+        private void ExportToSimpleExcelMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportSimpleExcel();
+        }
+
+        private void ExportToFullExcelMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportCompleteExcel();
         }
     }
 }

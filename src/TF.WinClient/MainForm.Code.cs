@@ -350,7 +350,7 @@ namespace TF.WinClient
             }
         }
 
-        private void ImportExcel()
+        private void ImportSimpleExcel()
         {
             if (_openProject == null)
             {
@@ -394,6 +394,68 @@ namespace TF.WinClient
                     foreach (var tfString in _openProject.Strings)
                     {
                         var key = tfString.Original;
+                        if (!string.IsNullOrEmpty(key))
+                        {
+                            if (strings.ContainsKey(key))
+                            {
+                                tfString.Translation = strings[key];
+                            }
+                        }
+                    }
+
+                    StringsDataGrid.Rows.Clear();
+                    LoadDataGrid();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"No se ha podido abrir el fichero.\r\n{e.GetType()}: {e.Message}", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void ImportCompleteExcel()
+        {
+            if (_openProject == null)
+            {
+                return;
+            }
+
+            ImportFileDialog.Filter = "Archivos Excel|*.xls;*.xlsx";
+
+            var result = ImportFileDialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                var strings = new Dictionary<string, string>();
+                try
+                {
+                    using (var stream = File.Open(ImportFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                    {
+                        // Auto-detect format, supports:
+                        //  - Binary Excel files (2.0-2003 format; *.xls)
+                        //  - OpenXml Excel files (2007 format; *.xlsx)
+                        using (var reader = ExcelReaderFactory.CreateReader(stream))
+                        {
+                            var content = reader.AsDataSet();
+
+                            var table = content.Tables[0];
+
+                            for (var i = 1; i < table.Rows.Count; i++)
+                            {
+                                var key = string.Concat(table.Rows[i][0].ToString(), "|", table.Rows[i][1].ToString(), "|", table.Rows[i][2].ToString(), "|", table.Rows[i][3].ToString());
+                                var value = table.Rows[i][4].ToString();
+
+                                if (!string.IsNullOrEmpty(key) && !strings.ContainsKey(key))
+                                {
+                                    strings.Add(key, value);
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (var tfString in _openProject.Strings)
+                    {
+                        var key = string.Concat(tfString.FileId, "|", tfString.Section, "|", tfString.Offset, "|", tfString.Original);
                         if (!string.IsNullOrEmpty(key))
                         {
                             if (strings.ContainsKey(key))
@@ -477,7 +539,7 @@ namespace TF.WinClient
             }
         }
 
-        private void ExportExcel()
+        private void ExportSimpleExcel()
         {
             if (_openProject == null)
             {
@@ -497,6 +559,41 @@ namespace TF.WinClient
                 {
                     sl.SetCellValue(row, 1, str.Original);
                     sl.SetCellValue(row, 2, str.Translation);
+                    row++;
+                }
+
+                sl.SaveAs(ExportFileDialog.FileName);
+            }
+        }
+
+        private void ExportCompleteExcel()
+        {
+            if (_openProject == null)
+            {
+                return;
+            }
+
+            ExportFileDialog.Filter = "Archivos Excel|*.xlsx";
+
+            var result = ExportFileDialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                var sl = new SLDocument();
+
+                var row = 2;
+                sl.SetCellValue(1, 1, "ID. FICHERO");
+                sl.SetCellValue(1, 2, "SECCION");
+                sl.SetCellValue(1, 3, "OFFSET");
+                sl.SetCellValue(1, 4, "ORIGINAL");
+                sl.SetCellValue(1, 5, "TRADUCCION");
+                foreach (var str in _openProject.Strings.Where(x => x.Visible))
+                {
+                    sl.SetCellValue(row, 1, str.FileId);
+                    sl.SetCellValue(row, 2, str.Section);
+                    sl.SetCellValue(row, 3, str.Offset);
+                    sl.SetCellValue(row, 4, str.Original);
+                    sl.SetCellValue(row, 5, str.Translation);
                     row++;
                 }
 
