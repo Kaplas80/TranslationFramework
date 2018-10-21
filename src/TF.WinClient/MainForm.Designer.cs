@@ -34,9 +34,9 @@ namespace TF.WinClient
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.UsedCharLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.MainMenuBar = new System.Windows.Forms.MenuStrip();
@@ -52,8 +52,12 @@ namespace TF.WinClient
             this.ImportToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportSimpleExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportCompleteExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportarTraducciónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExportToExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportToSimpleExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportToFullExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.SearchToolMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SearchNextMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,10 +77,8 @@ namespace TF.WinClient
             this.colOriginal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTranslation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ExportFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.ImportSimpleExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ImportCompleteExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExportToSimpleExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExportToFullExcelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportSimpleTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ImportCompleteTFMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StatusBar.SuspendLayout();
             this.MainMenuBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StringsDataGrid)).BeginInit();
@@ -195,10 +197,12 @@ namespace TF.WinClient
             // 
             // ImportTFMenuItem
             // 
+            this.ImportTFMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ImportSimpleTFMenuItem,
+            this.ImportCompleteTFMenuItem});
             this.ImportTFMenuItem.Name = "ImportTFMenuItem";
             this.ImportTFMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ImportTFMenuItem.Text = "Desde tf_*";
-            this.ImportTFMenuItem.Click += new System.EventHandler(this.ImportTFMenuItem_Click);
             // 
             // ImportExcelMenuItem
             // 
@@ -208,6 +212,20 @@ namespace TF.WinClient
             this.ImportExcelMenuItem.Name = "ImportExcelMenuItem";
             this.ImportExcelMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ImportExcelMenuItem.Text = "Desde Excel";
+            // 
+            // ImportSimpleExcelMenuItem
+            // 
+            this.ImportSimpleExcelMenuItem.Name = "ImportSimpleExcelMenuItem";
+            this.ImportSimpleExcelMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportSimpleExcelMenuItem.Text = "Sencillo";
+            this.ImportSimpleExcelMenuItem.Click += new System.EventHandler(this.ImportSimpleExcelMenuItem_Click);
+            // 
+            // ImportCompleteExcelMenuItem
+            // 
+            this.ImportCompleteExcelMenuItem.Name = "ImportCompleteExcelMenuItem";
+            this.ImportCompleteExcelMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportCompleteExcelMenuItem.Text = "Completo";
+            this.ImportCompleteExcelMenuItem.Click += new System.EventHandler(this.ImportCompleteExcelMenuItem_Click);
             // 
             // exportarTraducciónToolStripMenuItem
             // 
@@ -223,8 +241,22 @@ namespace TF.WinClient
             this.ExportToSimpleExcelMenuItem,
             this.ExportToFullExcelMenuItem});
             this.ExportToExcelMenuItem.Name = "ExportToExcelMenuItem";
-            this.ExportToExcelMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ExportToExcelMenuItem.Size = new System.Drawing.Size(111, 22);
             this.ExportToExcelMenuItem.Text = "A Excel";
+            // 
+            // ExportToSimpleExcelMenuItem
+            // 
+            this.ExportToSimpleExcelMenuItem.Name = "ExportToSimpleExcelMenuItem";
+            this.ExportToSimpleExcelMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.ExportToSimpleExcelMenuItem.Text = "Sencillo";
+            this.ExportToSimpleExcelMenuItem.Click += new System.EventHandler(this.ExportToSimpleExcelMenuItem_Click);
+            // 
+            // ExportToFullExcelMenuItem
+            // 
+            this.ExportToFullExcelMenuItem.Name = "ExportToFullExcelMenuItem";
+            this.ExportToFullExcelMenuItem.Size = new System.Drawing.Size(127, 22);
+            this.ExportToFullExcelMenuItem.Text = "Completo";
+            this.ExportToFullExcelMenuItem.Click += new System.EventHandler(this.ExportToFullExcelMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
@@ -326,8 +358,8 @@ namespace TF.WinClient
             // colGroup
             // 
             this.colGroup.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colGroup.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colGroup.DefaultCellStyle = dataGridViewCellStyle7;
             this.colGroup.FillWeight = 25F;
             this.colGroup.HeaderText = "Grupo";
             this.colGroup.Name = "colGroup";
@@ -337,8 +369,8 @@ namespace TF.WinClient
             // colOffset
             // 
             this.colOffset.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colOffset.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOffset.DefaultCellStyle = dataGridViewCellStyle8;
             this.colOffset.FillWeight = 15F;
             this.colOffset.HeaderText = "Offset";
             this.colOffset.Name = "colOffset";
@@ -348,8 +380,8 @@ namespace TF.WinClient
             // colOriginal
             // 
             this.colOriginal.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.colOriginal.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.colOriginal.DefaultCellStyle = dataGridViewCellStyle9;
             this.colOriginal.HeaderText = "Original";
             this.colOriginal.Name = "colOriginal";
             this.colOriginal.ReadOnly = true;
@@ -362,33 +394,19 @@ namespace TF.WinClient
             this.colTranslation.Name = "colTranslation";
             this.colTranslation.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
-            // ImportSimpleExcelMenuItem
+            // ImportSimpleTFMenuItem
             // 
-            this.ImportSimpleExcelMenuItem.Name = "ImportSimpleExcelMenuItem";
-            this.ImportSimpleExcelMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.ImportSimpleExcelMenuItem.Text = "Sencillo";
-            this.ImportSimpleExcelMenuItem.Click += new System.EventHandler(this.ImportSimpleExcelMenuItem_Click);
+            this.ImportSimpleTFMenuItem.Name = "ImportSimpleTFMenuItem";
+            this.ImportSimpleTFMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportSimpleTFMenuItem.Text = "Sencillo";
+            this.ImportSimpleTFMenuItem.Click += new System.EventHandler(this.ImportSimpleTFMenuItem_Click);
             // 
-            // ImportCompleteExcelMenuItem
+            // ImportCompleteTFMenuItem
             // 
-            this.ImportCompleteExcelMenuItem.Name = "ImportCompleteExcelMenuItem";
-            this.ImportCompleteExcelMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.ImportCompleteExcelMenuItem.Text = "Completo";
-            this.ImportCompleteExcelMenuItem.Click += new System.EventHandler(this.ImportCompleteExcelMenuItem_Click);
-            // 
-            // ExportToSimpleExcelMenuItem
-            // 
-            this.ExportToSimpleExcelMenuItem.Name = "ExportToSimpleExcelMenuItem";
-            this.ExportToSimpleExcelMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.ExportToSimpleExcelMenuItem.Text = "Sencillo";
-            this.ExportToSimpleExcelMenuItem.Click += new System.EventHandler(this.ExportToSimpleExcelMenuItem_Click);
-            // 
-            // ExportToFullExcelMenuItem
-            // 
-            this.ExportToFullExcelMenuItem.Name = "ExportToFullExcelMenuItem";
-            this.ExportToFullExcelMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.ExportToFullExcelMenuItem.Text = "Completo";
-            this.ExportToFullExcelMenuItem.Click += new System.EventHandler(this.ExportToFullExcelMenuItem_Click);
+            this.ImportCompleteTFMenuItem.Name = "ImportCompleteTFMenuItem";
+            this.ImportCompleteTFMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ImportCompleteTFMenuItem.Text = "Completo";
+            this.ImportCompleteTFMenuItem.Click += new System.EventHandler(this.ImportCompleteTFMenuItem_Click);
             // 
             // MainForm
             // 
@@ -454,6 +472,8 @@ namespace TF.WinClient
         private ToolStripMenuItem ImportCompleteExcelMenuItem;
         private ToolStripMenuItem ExportToSimpleExcelMenuItem;
         private ToolStripMenuItem ExportToFullExcelMenuItem;
+        private ToolStripMenuItem ImportSimpleTFMenuItem;
+        private ToolStripMenuItem ImportCompleteTFMenuItem;
     }
 }
 

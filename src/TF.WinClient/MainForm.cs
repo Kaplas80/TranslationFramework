@@ -150,11 +150,6 @@ namespace TF.WinClient
             e.Handled = true;
         }
 
-        private void ImportTFMenuItem_Click(object sender, EventArgs e)
-        {
-            ImportTF();
-        }
-
         private void StringsDataGrid_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             if (e.Control.GetType()== typeof(DataGridViewTextBoxEditingControl)) // "System.Windows.Forms.DataGridViewTextBoxEditingControl")
@@ -206,6 +201,16 @@ namespace TF.WinClient
         private void ExportToFullExcelMenuItem_Click(object sender, EventArgs e)
         {
             ExportCompleteExcel();
+        }
+
+        private void ImportSimpleTFMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportSimpleTF();
+        }
+
+        private void ImportCompleteTFMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportCompleteTF();
         }
     }
 }
