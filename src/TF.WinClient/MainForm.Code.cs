@@ -556,8 +556,8 @@ namespace TF.WinClient
                 var row = 1;
                 foreach (var str in _openProject.Strings.Where(x => x.Visible))
                 {
-                    sl.SetCellValue(row, 1, str.Original);
-                    sl.SetCellValue(row, 2, str.Translation);
+                    sl.SetCellValue(row, 1, $"'{str.Original}");
+                    sl.SetCellValue(row, 2, $"'{str.Translation}");
                     row++;
                 }
 
@@ -594,8 +594,8 @@ namespace TF.WinClient
                     sl.SetCellValue(row, 1, files[str.FileId]);
                     sl.SetCellValue(row, 2, str.Section);
                     sl.SetCellValue(row, 3, str.Offset);
-                    sl.SetCellValue(row, 4, str.Original);
-                    sl.SetCellValue(row, 5, str.Translation);
+                    sl.SetCellValue(row, 4, $"'{str.Original}");
+                    sl.SetCellValue(row, 5, $"'{str.Translation}");
                     row++;
                 }
 
