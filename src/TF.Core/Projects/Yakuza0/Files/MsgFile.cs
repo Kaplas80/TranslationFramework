@@ -111,7 +111,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                 item.Data = str;
                 _dataList.Add(item);
                 
-                _totalStringLength += item.Data.OriginalLength;
+                _totalStringLength += GetLength(str.Original, Encoding, false, false) + 1;
 
                 start = s.Position;
             }
@@ -277,7 +277,7 @@ namespace TF.Core.Projects.Yakuza0.Files
                     s.Seek(pos, SeekOrigin.Begin);
 
                     _namesList.Add(name);
-                    _totalNamesLength += name.OriginalLength;
+                    _totalNamesLength += GetLength(name.Original, Encoding, false, false) + 1;
                 }
             }
 
@@ -302,7 +302,6 @@ namespace TF.Core.Projects.Yakuza0.Files
                 Offset = (int) pos,
                 Section = section,
                 Visible = !string.IsNullOrWhiteSpace(str),
-                OriginalLength = (int)(s.Position - pos)
             };
 
             return tfString;
@@ -334,13 +333,11 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                 if (str.Original == str.Translation)
                 {
-                    newTotalStringLength += str.OriginalLength;
+                    newTotalStringLength += GetLength(str.Original, Encoding, false, false) + 1;
                 }
                 else
                 {
-                    var length = GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
-
-                    newTotalStringLength += length;
+                    newTotalStringLength += GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
                 }
             }
             var dif = newTotalStringLength - _totalStringLength;
@@ -352,13 +349,11 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                 if (str.Original == str.Translation)
                 {
-                    newTotalNamesLength += str.OriginalLength;
+                    newTotalNamesLength += GetLength(str.Original, Encoding, false, false) + 1;
                 }
                 else
                 {
-                    var length = GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
-
-                    newTotalNamesLength += length;
+                    newTotalNamesLength += GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
                 }
             }
             
@@ -600,13 +595,11 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                 if (str.Original == str.Translation)
                 {
-                    newTotalStringLength += str.OriginalLength;
+                    newTotalStringLength += GetLength(str.Original, Encoding, false, false) + 1;
                 }
                 else
                 {
-                    var length = GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
-
-                    newTotalStringLength += length;
+                    newTotalStringLength += GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
                 }
             }
             var dif = newTotalStringLength - _totalStringLength;
@@ -618,13 +611,11 @@ namespace TF.Core.Projects.Yakuza0.Files
 
                 if (str.Original == str.Translation)
                 {
-                    newTotalNamesLength += str.OriginalLength;
+                    newTotalNamesLength += GetLength(str.Original, Encoding, false, false) + 1;
                 }
                 else
                 {
-                    var length = GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
-
-                    newTotalNamesLength += length;
+                    newTotalNamesLength += GetLength(str.Translation, options.SelectedEncoding, false, false) + 1;
                 }
             }
             

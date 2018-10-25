@@ -300,16 +300,17 @@ namespace TF.WinClient
                 var strings = new Dictionary<string, string>();
 
                 Project project = null;
-                Dictionary<long, string> files;
+#if !DEBUG
                 try
                 {
+#endif
                     project = ProjectFactory.GetProject(ImportFileDialog.FileName);
 
                     project.LoadFiles();
 
                     project.LoadStrings();
 
-                    files = _openProject.Files.ToDictionary(file => file.Id, file => Path.GetFileName(file.Path));
+                    var files = project.Files.ToDictionary(file => file.Id, file => Path.GetFileName(file.Path));
 
                     foreach (var tfString in project.Strings)
                     {
@@ -320,7 +321,7 @@ namespace TF.WinClient
                         }
                         else
                         {
-                            key = string.Concat(files[tfString.FileId], "|", tfString.Section, "|", tfString.Offset, "|", tfString.Original);
+                            key = files.ContainsKey(tfString.FileId) ? string.Concat(files[tfString.FileId], "|", tfString.Section, "|", tfString.Offset, "|", tfString.Original) : string.Empty;
                         }
 
                         var value = tfString.Translation;
@@ -335,6 +336,7 @@ namespace TF.WinClient
                     }
 
                     project.Close();
+#if !DEBUG
                 }
                 catch (Exception e)
                 {
@@ -344,6 +346,9 @@ namespace TF.WinClient
 
                     return;
                 }
+#endif
+
+                var files2 = _openProject.Files.ToDictionary(file => file.Id, file => Path.GetFileName(file.Path));
 
                 foreach (var tfString in _openProject.Strings)
                 {
@@ -354,7 +359,7 @@ namespace TF.WinClient
                     }
                     else
                     {
-                        key = string.Concat(files[tfString.FileId], "|", tfString.Section, "|", tfString.Offset, "|", tfString.Original);
+                        key = files2.ContainsKey(tfString.FileId) ? string.Concat(files2[tfString.FileId], "|", tfString.Section, "|", tfString.Offset, "|", tfString.Original) : string.Empty;
                     }
 
                     if (!string.IsNullOrEmpty(key))
@@ -442,7 +447,7 @@ namespace TF.WinClient
                         }
                         else
                         {
-                            key = string.Concat(files[tfString.FileId], "|", tfString.Section, "|", tfString.Offset, "|", tfString.Original);
+                            key = files.ContainsKey(tfString.FileId) ? string.Concat(files[tfString.FileId], "|", tfString.Section, "|", tfString.Offset, "|", tfString.Original) : string.Empty;
                         }
 
                         if (!string.IsNullOrEmpty(key))
