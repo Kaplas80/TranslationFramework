@@ -2,6 +2,7 @@
 using TF.Core.Entities;
 using TF.Core.Projects.BattleRealms;
 using TF.Core.Projects.Disgaea;
+using TF.Core.Projects.JJMacfield;
 using TF.Core.Projects.SAO_HF;
 using TF.Core.Projects.Shenmue;
 using TF.Core.Projects.Spellforce2;
@@ -47,6 +48,11 @@ namespace TF.Core
             if (projectPath.EndsWith("tf_spf2"))
             {
                 return Spellforce2Project.GetProject(projectPath);
+            }
+
+            if (projectPath.EndsWith("tf_jjm"))
+            {
+                return JJMacfieldProject.GetProject(projectPath);
             }
 
             throw new Exception();
