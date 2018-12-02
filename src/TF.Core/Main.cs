@@ -13,6 +13,8 @@ namespace TF.Core
         private static readonly ISupportedProject Spellforce2 = new Projects.Spellforce2.ProjectInfo();
         private static readonly ISupportedProject JJMacfield = new Projects.JJMacfield.ProjectInfo();
         private static readonly ISupportedProject NightCry = new Projects.NightCry.ProjectInfo();
+        private static readonly ISupportedProject ToCS = new Projects.ToCS.ProjectInfo();
+
         private static readonly List<ISupportedProject> SupportedProjects;
 
         static Main()
@@ -27,7 +29,8 @@ namespace TF.Core
                 BattleRealms,
                 Spellforce2,
                 JJMacfield,
-                NightCry
+                NightCry,
+                ToCS
             };
         }
 

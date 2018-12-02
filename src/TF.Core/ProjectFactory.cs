@@ -8,6 +8,7 @@ using TF.Core.Projects.SAO_HF;
 using TF.Core.Projects.Shenmue;
 using TF.Core.Projects.Spellforce2;
 using TF.Core.Projects.SRR;
+using TF.Core.Projects.ToCS;
 using TF.Core.Projects.Yakuza0;
 
 namespace TF.Core
@@ -59,6 +60,11 @@ namespace TF.Core
             if (projectPath.EndsWith("tf_nightcry"))
             {
                 return NightCryProject.GetProject(projectPath);
+            }
+
+            if (projectPath.EndsWith("tf_tocs"))
+            {
+                return ToCSProject.GetProject(projectPath);
             }
 
             throw new Exception();
