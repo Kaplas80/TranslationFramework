@@ -108,6 +108,7 @@
     <Compile Include="Projects\Shenmue\ShenmueProject.cs" />
     <Compile Include="Projects\Yakuza0\Files\BarFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\ImbFile.cs" />
+    <Compile Include="Projects\Yakuza0\Files\MsgFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\PacFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\StreetNameFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\RestaurantFile.cs" />
@@ -118,7 +119,7 @@
     <Compile Include="Projects\Yakuza0\Files\BlacksmithFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\ArmsRepairFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\MfpFile.cs" />
-    <Compile Include="Projects\Yakuza0\Files\MsgFile.cs" />
+    <Compile Include="Projects\Yakuza0\Files\MsgFileNew.cs" />
     <Compile Include="Projects\Yakuza0\Files\MailFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\FileFactory.cs" />
     <Compile Include="Projects\Yakuza0\Files\CmnFile.cs" />
