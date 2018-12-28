@@ -12,6 +12,7 @@ namespace TF.Core.Projects.Yakuza0.Files
         //private static readonly byte[] MSG_HEADER = {0x20, 0xF7};
         //private static readonly byte[] MSG_HEADER2 = {0x20, 0x67};
         private static readonly byte[] MFP_HEADER = {0x6D, 0x66, 0x70, 0x62};
+        private static readonly byte[] NAME_HEADER = {0x61, 0x72, 0x6D, 0x70};
         
         public static ITFFile GetFile(string fileName)
         {
@@ -141,6 +142,11 @@ namespace TF.Core.Projects.Yakuza0.Files
                 return new PacFile(fileName);
             }
 
+            if (header.SequenceEqual(NAME_HEADER))
+            {
+                return new NameFile(fileName);
+            }
+            
             return null;
         }
     }

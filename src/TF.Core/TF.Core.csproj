@@ -109,6 +109,7 @@
     <Compile Include="Projects\Yakuza0\Files\BarFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\ImbFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\MsgFile.cs" />
+    <Compile Include="Projects\Yakuza0\Files\NameFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\PacFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\StreetNameFile.cs" />
     <Compile Include="Projects\Yakuza0\Files\RestaurantFile.cs" />
