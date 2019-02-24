@@ -15,7 +15,7 @@ namespace TF.Core.Projects.Yakuza0.Files
             public int MaxLength;
         }
 
-        private static readonly byte[] PATTERN = {0x8E, 0x9A, 0x96, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+        private static readonly byte[] PATTERN = {0x8E, 0x9A, 0x96, 0x8B};
 
         private List<DataItem> _dataList;
 
@@ -51,6 +51,7 @@ namespace TF.Core.Projects.Yakuza0.Files
 
             while (currentIndex != -1)
             {
+                s.ReadBytes(12);
                 var subtitleType = s.ReadValueU64(Endianness);
                 if (subtitleType == 0)
                 {
@@ -63,7 +64,18 @@ namespace TF.Core.Projects.Yakuza0.Files
                     s.ReadBytes(16);
 
                     // Estoy al comienzo de los primeros subtitulos
-                    s.ReadBytes(272 * subCount1);
+                    //s.ReadBytes(272 * subCount1);
+                    for (var i = 0; i < subCount1; i++)
+                    {
+                        s.ReadBytes(16);
+
+                        var pos = s.Position;
+
+                        var item = GetDataItem(s, (int) pos, currentIndex.ToString("X8"), 160);
+                        _dataList.Add(item);
+
+                        s.Seek(pos + 256, SeekOrigin.Begin);
+                    }
 
                     // Ahora los segundos
                     for (var i = 0; i < subCount2; i++)
@@ -87,7 +99,17 @@ namespace TF.Core.Projects.Yakuza0.Files
                     s.ReadBytes(12);
                     s.ReadBytes(16);
 
-                    s.ReadBytes(numJapaneseSubs * 144);
+                    //s.ReadBytes(numJapaneseSubs * 144);
+                    for (int i = 0; i < numJapaneseSubs; i++)
+                    {
+                        s.ReadBytes(16);
+
+                        var pos = s.Position;
+                        var item = GetDataItem(s, (int) pos, currentIndex.ToString("X8"), 128);
+                        _dataList.Add(item);
+
+                        s.Seek(pos + 128, SeekOrigin.Begin);
+                    }
 
                     // Ahora estoy al principio de los subtitulos en inglés
                     var numEnglishSubs = s.ReadValueS32(Endianness);

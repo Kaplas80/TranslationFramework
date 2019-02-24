@@ -489,7 +489,8 @@ namespace TF.Core.Projects.Yakuza0.Files
                 temp = Regex.Replace(temp, @"<[^>]*>", " ");
             }
 
-            return temp.GetLength(enc);
+            return temp.Length;
+            //return temp.GetLength(enc);
         }
 
         private void UpdatePauses(Stream s, IList<short> pauses)

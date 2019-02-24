@@ -11,17 +11,20 @@ namespace Yakuza0ExeStrings
     class Program
     {
         private static readonly long FILE_BASE = 0x0140001600;
+        //private static readonly long FILE_BASE = 0x0140001200; //beta
 
         static void Main(string[] args)
         {
             var usedStrings = new Dictionary<long, bool>();
             using (var outputStream = new FileStream("result.txt", FileMode.Create))
             using (var output = new StreamWriter(outputStream, Encoding.UTF8))
-            using (var input = new FileStream(@"H:\Steam\steamapps\common\Yakuza 0\media\Yakuza0.exe.backup", FileMode.Open))
+            using (var input = new FileStream(@"/run/media/kaplas/JUEGOS_SSD/Steam/steamapps/common/Yakuza 0/media/Yakuza0.exe", FileMode.Open))
             {
                 input.Seek(0x01043A00, SeekOrigin.Begin);
+                //input.Seek(0x01045E00, SeekOrigin.Begin); // beta
 
                 while (input.Position < 0x0115B000)
+                //while (input.Position < 0x0115D0E0) // beta
                 {
                     var currentOffset = input.Position;
 
